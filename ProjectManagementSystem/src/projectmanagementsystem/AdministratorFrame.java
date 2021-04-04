@@ -1405,7 +1405,7 @@ public class AdministratorFrame extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
-                        .addGap(19, 19, 19)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton1))
                     .addComponent(jTabbedPane1))
                 .addGap(30, 30, 30))
