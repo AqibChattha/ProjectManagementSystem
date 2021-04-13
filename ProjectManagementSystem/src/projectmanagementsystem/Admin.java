@@ -38,5 +38,11 @@ public class Admin extends User{
         return contactNumber;
     }
 
-    
+    /**
+     * This function gets the type of the class
+     * @return it will return type of the class
+     */
+    public String getType(){
+        return "Admin";
+    }
 }

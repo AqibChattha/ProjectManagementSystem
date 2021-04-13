@@ -110,4 +110,11 @@ public class Adviser extends User {
         return role;
     }
 
+    /**
+     * This function gets the type of the class
+     * @return it will return type of the class
+     */
+    public String getType(){
+        return "Adviser";
+    }
 }

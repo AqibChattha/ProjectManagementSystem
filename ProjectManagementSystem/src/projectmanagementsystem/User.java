@@ -16,8 +16,8 @@ public class User {
 
     private String userName;
     private String userGender;
-    private String emailID;
-    private String password;
+    private String emailID = "";
+    private String password = "";
 
     /**
      * This function will change the value of userName when called and than tell us
@@ -138,4 +138,11 @@ public class User {
         return password;
     }
 
+    /**
+     * This function gets the type of the class
+     * @return it will return type of the class
+     */
+    public String getType(){
+        return "User";
+    }
 }
