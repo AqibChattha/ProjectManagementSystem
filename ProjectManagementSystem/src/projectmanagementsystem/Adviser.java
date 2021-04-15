@@ -14,6 +14,18 @@ public class Adviser extends User {
     private String contactNumber;
     private String cnic;
     private String role;
+    
+    public Adviser(){
+        contactNumber = "";
+        cnic = "";
+        role = "";
+    }
+    public Adviser(String userName, String userGender, String emailID, String password, String contact, String cnic, String role){
+        super(userName, userGender, emailID, password);
+        contactNumber = contact;
+        this.cnic = cnic;
+        this.role = role;
+    }
 
     /**
      * This function will change the value of contactNumber when called and than
@@ -51,7 +63,7 @@ public class Adviser extends User {
      * or not.
      */
     public boolean setCnic(String cnic) {
-        if (cnic.length() == 11) {
+        if (cnic.length() == 13) {
             for (int i = 0; i < 11; i++) {
                 if (cnic.charAt(i) >= '0' && cnic.charAt(i) <= '9') {
                 }else{

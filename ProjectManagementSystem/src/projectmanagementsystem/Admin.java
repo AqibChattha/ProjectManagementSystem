@@ -12,6 +12,14 @@ package projectmanagementsystem;
 public class Admin extends User{
     private String contactNumber;
 
+    public Admin(){
+        contactNumber = "";
+    }
+    public Admin(String userName, String userGender, String emailID, String password, String contact){
+        super(userName, userGender, emailID, password);
+        contactNumber = contact;
+    }
+    
     /**
      * This function will change the value of contactNumber when called and than tell us
      * whether the contactNumber is changed or not. first it will check the value of parameter

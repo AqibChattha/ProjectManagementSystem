@@ -14,6 +14,16 @@ public class Student extends User {
     private String registrationNumber;
     private String department;
 
+    public Student(){
+        registrationNumber = "";
+        department = "";
+    }
+    public Student(String userName, String userGender, String emailID, String password, String regNo, String dep){
+        super(userName, userGender, emailID, password);
+        registrationNumber = regNo;
+        this.department = dep;
+    }
+    
     /**
      * This function will change the value of registrationNumber when called and than
      * tell us whether the registrationNumber is changed or not. first it will check

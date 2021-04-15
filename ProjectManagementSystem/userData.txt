@@ -1,0 +1,6 @@
+Admin,aaaa,Male,aaaa@aaaa.com,aaaaaaaa,11111111111,
+Adviser,bbbb,Male,bbbb@bbbb.com,bbbbbbbb,22222222222,2222222222222,Adviser,
+Adviser,cccc,Female,cccc@cccc.com,cccccccc,33333333333,3333333333333,Co-Adviser,
+Adviser,dddd,Male,dddd@dddd.com,dddddddd,44444444444,4444444444444,Industrial-Adviser,
+Adviser,mmmm,Male,mmmm@mmmm.com,mmmmmmmm,55555555555,5555555555555,Co-Adviser,
+Student,Saaa,Female,saaa@aaaa.com,aaaaaaaa,2000-CS-111,Computer Science,

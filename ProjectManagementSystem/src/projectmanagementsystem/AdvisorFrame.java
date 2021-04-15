@@ -111,6 +111,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Advisor");
+        setFocusCycleRoot(false);
         setMinimumSize(new java.awt.Dimension(995, 540));
 
         jPanel1.setBackground(new java.awt.Color(224, 224, 224));
@@ -496,13 +497,11 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jButton5.setBorder(null);
         jButton5.setBorderPainted(false);
         jButton5.setContentAreaFilled(false);
-        jButton5.setOpaque(false);
 
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jButton6.setText("...");
         jButton6.setBorderPainted(false);
         jButton6.setContentAreaFilled(false);
-        jButton6.setOpaque(false);
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);

@@ -16,14 +16,29 @@ public class User {
 
     private String userName;
     private String userGender;
-    private String emailID = "";
-    private String password = "";
+    private String emailID;
+    private String password;
+
+    public User() {
+        userName = "";
+        userGender = "";
+        emailID = "";
+        password = "";
+    }
+
+    public User(String userName, String userGender, String emailID, String password) {
+        this.userName = userName;
+        this.userGender = userGender;
+        this.emailID = emailID;
+        this.password = password;
+    }
 
     /**
-     * This function will change the value of userName when called and than tell us
-     * whether the userName is changed or not. first it will check the value of parameter
-     * name. if the name parameter is valid it will change the userName to name and
-     * return true. otherwise if the name is invalid it will return false.
+     * This function will change the value of userName when called and than tell
+     * us whether the userName is changed or not. first it will check the value
+     * of parameter name. if the name parameter is valid it will change the
+     * userName to name and return true. otherwise if the name is invalid it
+     * will return false.
      *
      * @param name String datatype input value to be the new userName
      * @return it returns boolean value, that tells wether the userName was
@@ -44,31 +59,30 @@ public class User {
     }
 
     /**
-     * This function will change the value of userGender when called and than tell us
-     * whether the userGender is changed or not. first it will check the value of parameter
-     * gender. if the name parameter is valid it will change the userGender value to gender
-     * and return true. otherwise if the gender is invalid it will return false.
+     * This function will change the value of userGender when called and than
+     * tell us whether the userGender is changed or not. first it will check the
+     * value of parameter gender. if the name parameter is valid it will change
+     * the userGender value to gender and return true. otherwise if the gender
+     * is invalid it will return false.
      *
      * @param gender String datatype input value to be the new userGender
      * @return it returns boolean value, that tells wether the userGender was
      * changed or not.
      */
     public boolean setGender(String gender) {
-        boolean flag;
         if (gender.equals("Male") || gender.equals("Female") || gender.equals("Other")) {
             this.userGender = gender;
-            flag = true;
-        } else {
-            flag = false;
+            return true;
         }
-        return flag;
+        return false;
     }
 
     /**
-     * This function will change the value of emailID when called and than tell us
-     * whether the emailID is changed or not. first it will check the value of parameter
-     * email. if the name parameter is valid it will change the emailID value to email
-     * and return true. otherwise if the email is invalid it will return false.
+     * This function will change the value of emailID when called and than tell
+     * us whether the emailID is changed or not. first it will check the value
+     * of parameter email. if the name parameter is valid it will change the
+     * emailID value to email and return true. otherwise if the email is invalid
+     * it will return false.
      *
      * @param email String datatype input value to be the new emailID
      * @return it returns boolean value, that tells wether the emailID was
@@ -89,17 +103,18 @@ public class User {
     }
 
     /**
-     * This function will change the value of password when called and than tell us
-     * whether the password is changed or not. first it will check the value of parameter
-     * pass. if the name parameter is valid it will change the password value to pass
-     * and return true. otherwise if the pass is invalid it will return false.
+     * This function will change the value of password when called and than tell
+     * us whether the password is changed or not. first it will check the value
+     * of parameter pass. if the name parameter is valid it will change the
+     * password value to pass and return true. otherwise if the pass is invalid
+     * it will return false.
      *
      * @param pass String datatype input value to be the new password
      * @return it returns boolean value, that tells wether the password was
      * changed or not.
      */
     public boolean setPassword(String pass) {
-        if (password.length() > 7) {
+        if (pass.length() > 7) {
             this.password = pass;
             return true;
         }
@@ -108,6 +123,7 @@ public class User {
 
     /**
      * This function gets the value of userName
+     *
      * @return it will return value of userName
      */
     public String getUserName() {
@@ -116,6 +132,7 @@ public class User {
 
     /**
      * This function gets the value of userGender
+     *
      * @return it will return value of userGender
      */
     public String getGender() {
@@ -124,6 +141,7 @@ public class User {
 
     /**
      * This function gets the value of emailID
+     *
      * @return it will return value of emailID
      */
     public String getEmail() {
@@ -132,6 +150,7 @@ public class User {
 
     /**
      * This function gets the value of password
+     *
      * @return it will return value of password
      */
     public String getPassword() {
@@ -140,9 +159,10 @@ public class User {
 
     /**
      * This function gets the type of the class
+     *
      * @return it will return type of the class
      */
-    public String getType(){
+    public String getType() {
         return "User";
     }
 }

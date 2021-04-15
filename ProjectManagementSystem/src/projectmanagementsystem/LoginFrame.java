@@ -169,10 +169,10 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(Manage.getObj().accountAccessed(Manage.getObj().getUserList(), jTextField1.getText(), new String(jPasswordField1.getPassword()))>=0){
+        if(Manage.getObj().accountAccessed(jTextField1.getText(), new String(jPasswordField1.getPassword()))>=0){
             JOptionPane.showMessageDialog(null, "Login Successfull.");
             this.setVisible(false);
-            Manage.getObj().openInterface(Manage.getObj().getUserList(), jTextField1.getText(), new String(jPasswordField1.getPassword()));
+            Manage.getObj().openInterface(jTextField1.getText(), new String(jPasswordField1.getPassword()));
         }else{
             JOptionPane.showMessageDialog(null, "Invalid Creditentials, Please try again.");
         }

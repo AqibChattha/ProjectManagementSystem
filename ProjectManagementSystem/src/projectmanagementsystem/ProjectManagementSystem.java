@@ -16,6 +16,7 @@ public class ProjectManagementSystem {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Manage.getObj();
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.setVisible(true);
     }
