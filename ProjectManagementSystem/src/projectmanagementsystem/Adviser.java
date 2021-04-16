@@ -14,6 +14,7 @@ public class Adviser extends User {
     private String contactNumber;
     private String cnic;
     private String role;
+    private String memberOFAdviseryGroup = "";
     
     public Adviser(){
         contactNumber = "";
@@ -25,6 +26,13 @@ public class Adviser extends User {
         contactNumber = contact;
         this.cnic = cnic;
         this.role = role;
+    }
+    public Adviser(String userName, String userGender, String emailID, String password, String contact, String cnic, String role, String moAG){
+        super(userName, userGender, emailID, password);
+        contactNumber = contact;
+        this.cnic = cnic;
+        this.role = role;
+        memberOFAdviseryGroup = moAG;
     }
 
     /**
@@ -64,7 +72,7 @@ public class Adviser extends User {
      */
     public boolean setCnic(String cnic) {
         if (cnic.length() == 13) {
-            for (int i = 0; i < 11; i++) {
+            for (int i = 0; i < 13; i++) {
                 if (cnic.charAt(i) >= '0' && cnic.charAt(i) <= '9') {
                 }else{
                     return false;
@@ -99,6 +107,22 @@ public class Adviser extends User {
     }
 
     /**
+     * This function will change the value of memberOFAdviseryGroup when called and than
+     * tell us whether the memberOFAdviseryGroup is changed or not. first it will check
+     * the value of parameter groupID. if the groupID parameter is valid it will
+     * change the memberOFAdviseryGroup and return true. otherwise if the groupID
+     * is invalid it will return false.
+     *
+     * @param groupID String datatype input value to be the new memberOFAdviseryGroup
+     * @return it returns boolean value, that tells wether the memberOFAdviseryGroup was
+     * changed or not.
+     */
+    public boolean setMemberOFAdviseryGroup(String groupID) {
+        memberOFAdviseryGroup = groupID;
+        return true;
+    }
+
+    /**
      * This function gets the value of contactNumber
      * @return it will return value of contactNumber
      */
@@ -120,6 +144,14 @@ public class Adviser extends User {
      */
     public String getRole() {
         return role;
+    }
+
+    /**
+     * This function gets the value of memberOFAdviseryGroup
+     * @return it will return value of memberOFAdviseryGroup
+     */
+    public String getMemberOFAdviseryGroup(){
+        return memberOFAdviseryGroup;
     }
 
     /**

@@ -11,10 +11,10 @@ package projectmanagementsystem;
  */
 public class AdvisoryGroup {
 
-    Adviser adviser;
-    Adviser coAdviser;
-    Adviser indAdviser;
-    String AG_No;
+    private Adviser adviser;
+    private Adviser coAdviser;
+    private Adviser indAdviser;
+    private String AG_No;
 
     public AdvisoryGroup() {
         adviser = new Adviser();

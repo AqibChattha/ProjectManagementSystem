@@ -13,6 +13,7 @@ public class Student extends User {
 
     private String registrationNumber;
     private String department;
+    private String memberOfGroup = "";
 
     public Student(){
         registrationNumber = "";
@@ -72,6 +73,22 @@ public class Student extends User {
     }
 
     /**
+     * This function will change the value of memberOfGroup when called and than
+     * tell us whether the memberOfGroup is changed or not. first it will check
+     * the value of parameter groupID. if the groupID parameter is valid it will
+     * change the memberOfGroup and return true. otherwise if the groupID
+     * is invalid it will return false.
+     *
+     * @param groupID String datatype input value to be the new memberOfGroup
+     * @return it returns boolean value, that tells wether the memberOfGroup was
+     * changed or not.
+     */
+    public boolean setMemberOFGroup(String groupID) {
+        memberOfGroup = groupID;
+        return true;
+    }
+
+    /**
      * This function gets the value of registrationNumber
      * @return it will return value of registrationNumber
      */
@@ -85,6 +102,14 @@ public class Student extends User {
      */
     public String getDepartment() {
         return department;
+    }
+
+    /**
+     * This function gets the value of memberOfGroup
+     * @return it will return value of memberOfGroup
+     */
+    public String getMemberOFGroup() {
+        return memberOfGroup;
     }
 
     /**

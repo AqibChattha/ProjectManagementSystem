@@ -31,7 +31,13 @@ public class Admin extends User{
      * changed or not.
      */
     public boolean setContactNumber(String number) {
-        if (number.length()==11) {
+        if (number.length() == 11) {
+            for (int i = 0; i < 11; i++) {
+                if (number.charAt(i) >= '0' && number.charAt(i) <= '9') {
+                }else{
+                    return false;
+                }
+            }
             this.contactNumber = number;
             return true;
         }
