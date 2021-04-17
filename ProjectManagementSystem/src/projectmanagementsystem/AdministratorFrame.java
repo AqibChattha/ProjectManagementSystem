@@ -7,9 +7,11 @@ package projectmanagementsystem;
 
 import com.toedter.calendar.JDateChooser;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 /**
  *
@@ -480,6 +482,7 @@ public class AdministratorFrame extends javax.swing.JFrame {
     }
 
     public void addAdvisor(String a1, String a2, String a3, String a4, String a5, String a6, String a7, JButton button, JTable table) {
+
         Adviser a = new Adviser();
         if (a.setName(a1) && a.setCnic(a2) && a.setGender(a3) && a.setContactNumber(a4) && a.setRole(a5) && a.setEmail(a6) && a.setPassword(a7)) {
             if (button.getText().equals("Add")) {
@@ -497,6 +500,16 @@ public class AdministratorFrame extends javax.swing.JFrame {
                     }
                 }
             }
+            updateAdviserTables();
+            Manage.getObj().saveUsers();
+            jTextField1.setText("");
+            jTextField2.setText("");
+            jRadioButton1.setSelected(false);
+            jRadioButton2.setSelected(false);
+            jTextField3.setText("");
+            jComboBox1.setSelectedIndex(0);
+            jTextField23.setText("");
+            jPasswordField1.setText("");
 
         } else {
             JOptionPane.showMessageDialog(null, "Invalid input.");
@@ -585,13 +598,14 @@ public class AdministratorFrame extends javax.swing.JFrame {
         if (ag.setAdviser(adviser) && ag.setCoAdviser(coAdviser) && ag.setIndAdviser(indAdviser)) {
             if (button.getText().equals("Create")) {
                 ag.setAG_No();
-                Manage.getObj().getAdvisoryGroups().add(ag);
-                assignGroupNoToMembers(aI, caI, iaI, ag.getAG_No());
+                String a = ag.getAG_No();
+                assignGroupNoToMembers(aI, caI, iaI, a);
+                Manage.getObj().getAdvisoryGroups().add(new AdvisoryGroup((Adviser)Manage.getObj().getUserList().get(aI), (Adviser)Manage.getObj().getUserList().get(aI), (Adviser)Manage.getObj().getUserList().get(aI), a));
             } else if (button.getText().equals("Edit")) {
                 removeGroupNoFromMembers(Manage.getObj().getAdvisoryGroups().get(index));
-                ag.setAG_No(Manage.getObj().getAdvisoryGroups().get(index).getAG_No());
-                assignGroupNoToMembers(aI, caI, iaI, ag.getAG_No());
-                Manage.getObj().getAdvisoryGroups().set(index, ag);
+                String a = Manage.getObj().getAdvisoryGroups().get(index).getAG_No();
+                assignGroupNoToMembers(aI, caI, iaI, a);
+                Manage.getObj().getAdvisoryGroups().set(index, new AdvisoryGroup((Adviser)Manage.getObj().getUserList().get(aI), (Adviser)Manage.getObj().getUserList().get(aI), (Adviser)Manage.getObj().getUserList().get(aI), a));
                 JOptionPane.showMessageDialog(null, "Advisory Board Updated Successfully.");
             }
 
@@ -673,9 +687,23 @@ public class AdministratorFrame extends javax.swing.JFrame {
         if (e.setTitle(a1.getText()) && e.setTotalNo(a2.getText()) && e.setDescription(a3.getText()) && e.setDeadline(a4.getDate())) {
             if (button.getText().equals("Add")) {
                 Manage.getObj().getEvaluations().add(e);
+                List<Evaluations> l = new ArrayList<>();
+                for (int i = 0; i < Manage.getObj().getUserList().size(); i++) {
+                    if (Manage.getObj().getUserList().get(i).getType().equals(studentType)) {
+                        l.add(new Evaluations(a1.getText(), a2.getText(), a3.getText(), a4.getDate(), ((Student) Manage.getObj().getUserList().get(i)).getRregistrationNumber()));
+                    }
+                }
+                Manage.getObj().getStudentEvaluations().add((ArrayList) l);
             } else if (button.getText().equals("Edit")) {
                 int index = table.getSelectedRow();
                 Manage.getObj().getEvaluations().set(index, e);
+                List<Evaluations> l = new ArrayList<>();
+                for (int i = 0; i < Manage.getObj().getUserList().size(); i++) {
+                    if (Manage.getObj().getUserList().get(i).getType().equals(studentType)) {
+                        l.add(new Evaluations(a1.getText(), a2.getText(), a3.getText(), a4.getDate(), ((Student) Manage.getObj().getUserList().get(i)).getRregistrationNumber()));
+                    }
+                }
+                Manage.getObj().getStudentEvaluations().set(index, (ArrayList) l);
                 JOptionPane.showMessageDialog(null, "Evaluation Updated Successfully.");
             }
             Manage.getObj().saveEvaluations();
@@ -1520,7 +1548,7 @@ public class AdministratorFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(44, 44, 44)
                         .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

@@ -53,10 +53,15 @@ public class LoginFrame extends javax.swing.JFrame {
         jTextField1.setBackground(new java.awt.Color(242, 242, 242));
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField1.setForeground(java.awt.Color.darkGray);
-        jTextField1.setText("Username");
+        jTextField1.setText("ali@student.uet.edu.pk");
         jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTextField1MouseClicked(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField1KeyTyped(evt);
             }
         });
 
@@ -65,17 +70,22 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel1.setText("Project Mangement ");
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel2.setText("Username");
+        jLabel2.setText("Email");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Password");
 
         jPasswordField1.setBackground(new java.awt.Color(242, 242, 242));
-        jPasswordField1.setText("Password");
+        jPasswordField1.setText("--------");
         jPasswordField1.setMinimumSize(new java.awt.Dimension(6, 28));
         jPasswordField1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPasswordField1MouseClicked(evt);
+            }
+        });
+        jPasswordField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jPasswordField1KeyTyped(evt);
             }
         });
 
@@ -115,16 +125,18 @@ public class LoginFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(259, 259, 259))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(246, 246, 246))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jCheckBox1)
                     .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBox1)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(45, 45, 45))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(75, 75, 75)
@@ -169,42 +181,58 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(Manage.getObj().accountAccessed(jTextField1.getText(), new String(jPasswordField1.getPassword()))>=0){
-            JOptionPane.showMessageDialog(null, "Login Successfull.");
-            this.setVisible(false);
-            Manage.getObj().openInterface(jTextField1.getText(), new String(jPasswordField1.getPassword()));
-        }else{
-            JOptionPane.showMessageDialog(null, "Invalid Creditentials, Please try again.");
+        if (!(jTextField1.getText().equals("ali@student.uet.edu.pk") && new String(jPasswordField1.getPassword()).equals("--------"))) {
+            if (Manage.getObj().accountAccessed(jTextField1.getText(), new String(jPasswordField1.getPassword())) >= 0) {
+                JOptionPane.showMessageDialog(null, "Login Successfull.");
+                this.setVisible(false);
+                Manage.getObj().openInterface(jTextField1.getText(), new String(jPasswordField1.getPassword()));
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid Creditentials, Please try again.");
+            }
+        }else {
+            JOptionPane.showMessageDialog(null, "Please enter email and password to Login.");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:        
         if (jCheckBox1.isSelected()) {
-            jPasswordField1.setEchoChar((char)0);
-        }else{
-                jPasswordField1.setEchoChar('*');
-            }
+            jPasswordField1.setEchoChar((char) 0);
+            if (new String(jPasswordField1.getPassword()).equals("--------")) {
+            jPasswordField1.setText("");
+        }
+        } else {
+            jPasswordField1.setEchoChar('*');
+            if (new String(jPasswordField1.getPassword()).equals("")) {
+            jPasswordField1.setText("--------");
+        }
+        }
     }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         JFrame exit = new JFrame("EXIT");
-        if(JOptionPane.showConfirmDialog(exit, "Confirm if you want to exit.", "EXIT", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_NO_OPTION){
+        if (JOptionPane.showConfirmDialog(exit, "Confirm if you want to exit.", "EXIT", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_NO_OPTION) {
             System.exit(0);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
         // TODO add your handling code here:
-        if (jTextField1.getText().equals("Username")) {
+        if (new String(jPasswordField1.getPassword()).equals("")) {
+            jPasswordField1.setText("--------");
+        }
+        if (jTextField1.getText().equals("ali@student.uet.edu.pk")) {
             jTextField1.setText("");
         }
     }//GEN-LAST:event_jTextField1MouseClicked
 
     private void jPasswordField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPasswordField1MouseClicked
         // TODO add your handling code here:
-       if (new String(jPasswordField1.getPassword()).equals("Password")) {
+        if (jTextField1.getText().equals("")) {
+            jTextField1.setText("ali@student.uet.edu.pk");
+        }
+        if (new String(jPasswordField1.getPassword()).equals("--------")) {
             jPasswordField1.setText("");
         }
     }//GEN-LAST:event_jPasswordField1MouseClicked
@@ -212,12 +240,26 @@ public class LoginFrame extends javax.swing.JFrame {
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
         // TODO add your handling code here:
         if (jTextField1.getText().equals("")) {
-            jTextField1.setText("Username");
+            jTextField1.setText("ali@student.uet.edu.pk");
         }
         if (new String(jPasswordField1.getPassword()).equals("")) {
-            jPasswordField1.setText("Password");
+            jPasswordField1.setText("--------");
         }
     }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
+        // TODO add your handling code here:
+        if (jTextField1.getText().equals("ali@student.uet.edu.pk")) {
+            jTextField1.setText("");
+        }
+    }//GEN-LAST:event_jTextField1KeyTyped
+
+    private void jPasswordField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField1KeyTyped
+        // TODO add your handling code here:
+        if (new String(jPasswordField1.getPassword()).equals("--------")) {
+            jPasswordField1.setText("");
+        }
+    }//GEN-LAST:event_jPasswordField1KeyTyped
 
     /**
      * @param args the command line arguments

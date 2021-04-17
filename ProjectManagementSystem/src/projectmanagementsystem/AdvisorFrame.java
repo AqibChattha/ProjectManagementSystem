@@ -5,17 +5,143 @@
  */
 package projectmanagementsystem;
 
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 /**
  *
  * @author humza
  */
 public class AdvisorFrame extends javax.swing.JFrame {
 
+    DefaultTableModel model;
+    String studentType = "Student";
+    String adviserType = "Adviser";
+    int index;
+    Adviser userNow;
+
     /**
      * Creates new form AdvisorFrame
      */
-    public AdvisorFrame() {
+    public AdvisorFrame(int index) {
         initComponents();
+
+        userNow = (Adviser) Manage.getObj().getUserList().get(index);
+        this.index = index;
+
+        setEvaluations(jTable3);
+        setAccountInfo();
+        setFinalizedGroupTable(jTable1);
+        setProjectTable(jTable2);
+    }
+
+    public void setAccountInfo() {
+        jTextField6.setText(userNow.getUserName());
+        jTextField7.setText(userNow.getCnic());
+        jTextField8.setText(userNow.getRole());
+        jTextField5.setText(userNow.getGender());
+        jTextField16.setText(userNow.getEmail());
+        jTextField17.setText(userNow.getContactNumber());
+
+        for (int i = 0; i < Manage.getObj().getAdvisoryGroups().size(); i++) {
+            AdvisoryGroup ag = Manage.getObj().getAdvisoryGroups().get(i);
+            if (ag.getAdviser().equals(userNow) || ag.getCoAdviser().equals(userNow) || ag.getIndAdviser().equals(userNow)) {
+                jTextField1.setText(ag.getAdviser().getUserName());
+                jTextField2.setText(ag.getCoAdviser().getUserName());
+                jTextField3.setText(ag.getIndAdviser().getUserName());
+                jTextField18.setText(ag.getAG_No());
+            }
+
+        }
+    }
+
+    public void setGroupInfo() {
+        jTextField6.setText(userNow.getUserName());
+        jTextField7.setText(userNow.getCnic());
+        jTextField8.setText(userNow.getRole());
+        jTextField5.setText(userNow.getGender());
+        jTextField16.setText(userNow.getEmail());
+        jTextField17.setText(userNow.getContactNumber());
+    }
+
+    public void changePassword() {
+        if (jTextField9.getText().equals(jTextField10.getText())) {
+            if (jTextField10.getText().equals(userNow.getPassword())) {
+                if (Manage.getObj().getUserList().get(index).setPassword(jTextField11.getText())) {
+                    JOptionPane.showMessageDialog(null, "Password changed successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid new Password.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Enter correct old password.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Psasswords don't match.");
+        }
+    }
+
+    public void setEvaluations(JTable a) {
+
+        a.setModel(new DefaultTableModel(null, new String[]{"Reg No.", "Title", "Total No.", "Obt No.", "Deadline"}));
+        model = (DefaultTableModel) a.getModel();
+
+        for (int i = 0; i < Manage.getObj().getFinalizedGroups().size(); i++) {
+            AdvisoryGroup ag = Manage.getObj().getFinalizedGroups().get(i).getProject().getAdvisoryGroup();
+            if (ag.getAdviser().equals(userNow) || ag.getCoAdviser().equals(userNow) || ag.getIndAdviser().equals(userNow)) {
+                Group g = Manage.getObj().getFinalizedGroups().get(i).getGroup();
+                for (int k = 0; k < Manage.getObj().getStudentEvaluations().size(); k++) {
+                    List<Evaluations> l = Manage.getObj().getStudentEvaluations().get(k);
+                    for (int j = 0; j < l.size(); j++) {
+                        if (g.getMember1().getRregistrationNumber().equals(l.get(j).getStudentRegNo()) || g.getMember2().getRregistrationNumber().equals(l.get(j).getStudentRegNo()) || g.getMember3().getRregistrationNumber().equals(l.get(j).getStudentRegNo()) || g.getMember4().getRregistrationNumber().equals(l.get(j).getStudentRegNo())) {
+                            Object rowData[] = new Object[5];
+                            rowData[0] = l.get(j).getTitle();
+                            rowData[1] = l.get(j).getStudentRegNo();
+                            rowData[2] = l.get(j).getTotalNo();
+                            rowData[3] = l.get(j).getObtainedNo();
+                            rowData[4] = new SimpleDateFormat("MMMM dd, yyyy").format(Manage.getObj().getEvaluations().get(i).getDeadline());
+                            model.addRow(rowData);
+                        }
+
+                    }
+                }
+            }
+
+        }
+    }
+
+    public void setProjectTable(JTable a) {
+
+        a.setModel(new DefaultTableModel(null, new String[]{"Type", "Title", "Advisery Group"}));
+        model = (DefaultTableModel) a.getModel();
+        Object rowData[] = new Object[3];
+        for (int i = 0; i < Manage.getObj().getProjects().size(); i++) {
+            AdvisoryGroup ag = Manage.getObj().getProjects().get(i).getAdvisoryGroup();
+            if (ag.getAdviser().equals(userNow) || ag.getCoAdviser().equals(userNow) || ag.getIndAdviser().equals(userNow)) {
+                rowData[0] = Manage.getObj().getProjects().get(i).getType();
+                rowData[1] = Manage.getObj().getProjects().get(i).getTitle();
+                rowData[2] = Manage.getObj().getProjects().get(i).getAdvisoryGroup().getAG_No();
+                model.addRow(rowData);
+            }
+        }
+    }
+
+    public void setFinalizedGroupTable(JTable a) {
+
+        a.setModel(new DefaultTableModel(null, new String[]{"Group ID", "Project Title", "Advisery Group"}));
+        model = (DefaultTableModel) a.getModel();
+        Object rowData[] = new Object[3];
+        for (int i = 0; i < Manage.getObj().getFinalizedGroups().size(); i++) {
+            AdvisoryGroup ag = Manage.getObj().getFinalizedGroups().get(i).getProject().getAdvisoryGroup();
+            if (ag.getAdviser().equals(userNow) || ag.getCoAdviser().equals(userNow) || ag.getIndAdviser().equals(userNow)) {
+                rowData[0] = Manage.getObj().getFinalizedGroups().get(i).getGroup().getSG_No();
+                rowData[1] = Manage.getObj().getFinalizedGroups().get(i).getProject().getTitle();
+                rowData[2] = Manage.getObj().getFinalizedGroups().get(i).getProject().getAdvisoryGroup().getAG_No();
+                model.addRow(rowData);
+            }
+        }
     }
 
     /**
@@ -39,12 +165,11 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jTextField18 = new javax.swing.JTextField();
+        jLabel30 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -91,13 +216,14 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jTextField6 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jPasswordField1 = new javax.swing.JPasswordField();
         jTextField8 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
+        jTextField16 = new javax.swing.JTextField();
+        jTextField17 = new javax.swing.JTextField();
+        jLabel29 = new javax.swing.JLabel();
         jPanel12 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
@@ -125,6 +251,11 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jLabel2.setText("Advisor Name");
 
         jButton1.setText("Log out");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Username");
@@ -137,42 +268,43 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel4.setText("Group Information :");
 
-        jLabel5.setText("Group Name");
+        jLabel5.setText("Adviser");
 
-        jLabel6.setText("Project Title");
+        jLabel6.setText("Co-Adivser");
 
-        jLabel7.setText("Project Type");
+        jLabel7.setText("Industrial-Adviser");
 
-        jLabel8.setText("Description");
+        jTextField1.setEditable(false);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextField2.setEditable(false);
+
+        jTextField3.setEditable(false);
+
+        jTextField18.setEditable(false);
+
+        jLabel30.setText("Group No.");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel6)
                             .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel5))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel30))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)))))
-                .addContainerGap(40, Short.MAX_VALUE))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField18, javax.swing.GroupLayout.Alignment.LEADING)))
+                    .addComponent(jLabel4))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -187,14 +319,14 @@ public class AdvisorFrame extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel30))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -224,9 +356,9 @@ public class AdvisorFrame extends javax.swing.JFrame {
         ));
         jScrollPane8.setViewportView(jTable2);
 
-        jLabel9.setText("Student Group Details");
+        jLabel9.setText("Projects Assigned:");
 
-        jLabel10.setText("Advisory Group Details :");
+        jLabel10.setText("Groups Assigned:");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -235,8 +367,8 @@ public class AdvisorFrame extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 443, Short.MAX_VALUE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                    .addComponent(jScrollPane8)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
@@ -250,11 +382,11 @@ public class AdvisorFrame extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
                 .addGap(44, 44, 44)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -297,16 +429,14 @@ public class AdvisorFrame extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel12))
-                            .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
                                 .addComponent(jLabel13)
                                 .addGap(18, 18, 18)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 52, Short.MAX_VALUE))
+                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton2)))
@@ -328,7 +458,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
 
         jLayeredPane2.setLayout(new java.awt.CardLayout());
 
-        jLabel11.setText("Evaluations :");
+        jLabel11.setText("Add Marks of Students:");
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -352,10 +482,10 @@ public class AdvisorFrame extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton3)))
@@ -363,11 +493,11 @@ public class AdvisorFrame extends javax.swing.JFrame {
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(57, 57, 57)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
                 .addContainerGap())
@@ -410,7 +540,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jTextField15)
                     .addComponent(jTextField14, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
                     .addComponent(jTextField12, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField13, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(141, 141, 141))
@@ -443,7 +573,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
                 .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
                         .addGap(18, 18, 18))
                     .addGroup(jPanel10Layout.createSequentialGroup()
                         .addGap(62, 62, 62)
@@ -535,37 +665,50 @@ public class AdvisorFrame extends javax.swing.JFrame {
 
         jLabel17.setText("Name");
 
+        jTextField7.setEditable(false);
+
+        jTextField6.setEditable(false);
+
         jLabel19.setText("Position");
 
-        jCheckBox1.setText("Show Password");
+        jTextField8.setEditable(false);
 
-        jLabel16.setText("Password");
+        jLabel16.setText("Email");
 
         jLabel18.setText("CNIC");
 
-        jLabel15.setText("Username");
+        jTextField5.setEditable(false);
+
+        jLabel15.setText("Gender");
+
+        jTextField16.setEditable(false);
+
+        jTextField17.setEditable(false);
+
+        jLabel29.setText("Contact No.");
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
         jPanel14Layout.setHorizontalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel17)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel15)
                     .addComponent(jLabel18)
-                    .addComponent(jLabel19))
-                .addGap(26, 26, 26)
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel29)
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jTextField5)
-                    .addComponent(jPasswordField1)
-                    .addComponent(jTextField6)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
                     .addComponent(jTextField7)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(jTextField17)
+                    .addComponent(jTextField8)
+                    .addComponent(jTextField5)
+                    .addComponent(jTextField16))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -580,6 +723,10 @@ public class AdvisorFrame extends javax.swing.JFrame {
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel29)
+                    .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -589,10 +736,8 @@ public class AdvisorFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox1)
-                .addContainerGap())
+                    .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -600,16 +745,16 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(159, 159, 159)
+                .addGap(133, 133, 133)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(206, Short.MAX_VALUE))
+                .addContainerGap(236, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(73, 73, 73)
                 .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(80, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         jLayeredPane1.add(jPanel11, "card2");
@@ -623,6 +768,11 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jLabel22.setText("Confirm Password");
 
         jButton7.setText("Change");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -663,7 +813,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel22)
                     .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
                 .addComponent(jButton7)
                 .addContainerGap())
         );
@@ -695,7 +845,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 377, Short.MAX_VALUE)
+            .addGap(0, 393, Short.MAX_VALUE)
         );
 
         jLayeredPane1.add(jPanel13, "card4");
@@ -752,8 +902,8 @@ public class AdvisorFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(43, 43, 43)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                .addGap(27, 27, 27)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -771,40 +921,53 @@ public class AdvisorFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        JOptionPane.showMessageDialog(null, "Logout Successfull.");
+        LoginFrame lf = new LoginFrame();
+        lf.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        changePassword();
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdvisorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdvisorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdvisorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdvisorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AdvisorFrame().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(AdvisorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(AdvisorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(AdvisorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(AdvisorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new AdvisorFrame().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -815,7 +978,6 @@ public class AdvisorFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -837,12 +999,13 @@ public class AdvisorFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane2;
@@ -861,8 +1024,6 @@ public class AdvisorFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
@@ -871,7 +1032,6 @@ public class AdvisorFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
@@ -880,6 +1040,9 @@ public class AdvisorFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField14;
     private javax.swing.JTextField jTextField15;
+    private javax.swing.JTextField jTextField16;
+    private javax.swing.JTextField jTextField17;
+    private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;

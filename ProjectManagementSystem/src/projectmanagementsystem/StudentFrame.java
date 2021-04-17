@@ -5,6 +5,7 @@
  */
 package projectmanagementsystem;
 
+import java.text.SimpleDateFormat;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLayeredPane;
@@ -24,15 +25,48 @@ public class StudentFrame extends javax.swing.JFrame {
     DefaultTableModel model;
     String studentType = "Student";
     String adviserType = "Adviser";
+    int index;
+    Student userNow;
 
     /**
      * Creates new form StudentFrame
      */
-    public StudentFrame() {
+    public StudentFrame(int index) {
         initComponents();
+
+        userNow = (Student) Manage.getObj().getUserList().get(index);
+        this.index = index;
+
         setUserTable(jTable3);
+        setProjectTable(jTable4);
+        setEvaluations(jTable5);
+        setAccountInfo();
     }
-    
+
+    public void setAccountInfo() {
+        jTextField6.setText(userNow.getUserName());
+        jTextField7.setText(userNow.getRregistrationNumber());
+        jTextField8.setText(userNow.getDepartment());
+        jTextField5.setText(userNow.getGender());
+        jTextField29.setText(userNow.getEmail());
+    }
+
+    public void changePassword() {
+        if (jTextField9.getText().equals(jTextField10.getText())) {
+            if (jTextField10.getText().equals(userNow.getPassword())) {
+                if (Manage.getObj().getUserList().get(index).setPassword(jTextField11.getText())) {
+                    JOptionPane.showMessageDialog(null, "Password changed successfully.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid new Password.");
+                }
+            }else {
+                JOptionPane.showMessageDialog(null, "Enter correct old password.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Psasswords don't match.");
+        }
+    }
+
     public void viewSelectedUser(JTable a, JTextField a1, JTextField a2, JTextField a3, JTextField a4, JTextField a5, JLayeredPane jpane, JPanel panal, String userType) {
 
         int index = a.getSelectedRow();
@@ -68,7 +102,57 @@ public class StudentFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please select first.");
         }
     }
-    
+
+    public void viewSelectedProject(JTable a, JTextField a1, JTextField a2, JTextField a3, JTextArea area, JTextField a4, JTextField a5, JLayeredPane jpane, JPanel panal) {
+        int index = a.getSelectedRow();
+        if (index >= 0) {
+            a1.setText(Manage.getObj().getProjects().get(index).getTitle());
+            a2.setText(Manage.getObj().getProjects().get(index).getType());
+            area.setText(Manage.getObj().getProjects().get(index).getDescription());
+            a3.setText(Manage.getObj().getProjects().get(index).getAdvisoryGroup().getAdviser().getUserName());
+            a4.setText(Manage.getObj().getProjects().get(index).getAdvisoryGroup().getCoAdviser().getUserName());
+            a5.setText(Manage.getObj().getProjects().get(index).getAdvisoryGroup().getIndAdviser().getUserName());
+
+            a1.setEditable(false);
+            a2.setEditable(false);
+            area.setEditable(false);
+            a3.setEditable(false);
+            a4.setEditable(false);
+            a5.setEditable(false);
+
+            jpane.removeAll();
+            jpane.add(panal);
+            jpane.repaint();
+            jpane.revalidate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select first.");
+        }
+    }
+
+    public void viewSelectedEvaluations(JTable a, JTextField a1, JTextField a2, JTextField a3, JTextArea area, JTextField a4, JLayeredPane jpane, JPanel panal) {
+        int index = a.getSelectedRow();
+        if (index >= 0) {
+            a1.setText(Manage.getObj().getEvaluations().get(index).getTitle());
+            a2.setText(Manage.getObj().getEvaluations().get(index).getTotalNo());
+            a3.setText(Manage.getObj().getEvaluations().get(index).getObtainedNo());
+            area.setText(Manage.getObj().getEvaluations().get(index).getDescription());
+            a4.setText(new SimpleDateFormat("MMMM dd, yyyy").format(Manage.getObj().getEvaluations().get(index).getDeadline()));
+
+            a1.setEditable(false);
+            a2.setEditable(false);
+            a3.setEditable(false);
+            area.setEditable(false);
+            a4.setEditable(false);
+
+            jpane.removeAll();
+            jpane.add(panal);
+            jpane.repaint();
+            jpane.revalidate();
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select first.");
+        }
+    }
+
     public void selectSelectedStuedent(JTable aTable, JTextField m1, JTextField m2, JTextField m3, JTextField m4) {
         int index = aTable.getSelectedRow();
         int userNo = 0;
@@ -95,6 +179,16 @@ public class StudentFrame extends javax.swing.JFrame {
         }
     }
 
+    public void selectSelectedProject(JTable aTable, JTextField p1, JTextField p2) {
+        int index = aTable.getSelectedRow();
+        if (index >= 0) {
+            p1.setText(Manage.getObj().getProjects().get(index).getTitle());
+            p2.setText(Manage.getObj().getProjects().get(index).getType());
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select first.");
+        }
+    }
+
     public void setUserTable(JTable a) {
 
         a.setModel(new DefaultTableModel(null, new String[]{"Reg No.", "Name", "Email", "Gender"}));
@@ -109,6 +203,32 @@ public class StudentFrame extends javax.swing.JFrame {
                 rowData[3] = s1.getGender();
                 model.addRow(rowData);
             }
+        }
+    }
+
+    public void setProjectTable(JTable a) {
+
+        a.setModel(new DefaultTableModel(null, new String[]{"Type", "Title", "Advisery Group"}));
+        model = (DefaultTableModel) a.getModel();
+        Object rowData[] = new Object[3];
+        for (int i = 0; i < Manage.getObj().getProjects().size(); i++) {
+            rowData[0] = Manage.getObj().getProjects().get(i).getType();
+            rowData[1] = Manage.getObj().getProjects().get(i).getTitle();
+            rowData[2] = Manage.getObj().getProjects().get(i).getAdvisoryGroup().getAG_No();
+            model.addRow(rowData);
+        }
+    }
+
+    public void setEvaluations(JTable a) {
+
+        a.setModel(new DefaultTableModel(null, new String[]{"Title", "Total No.", "Deadline"}));
+        model = (DefaultTableModel) a.getModel();
+        Object rowData[] = new Object[3];
+        for (int i = 0; i < Manage.getObj().getEvaluations().size(); i++) {
+            rowData[0] = Manage.getObj().getEvaluations().get(i).getTitle();
+            rowData[1] = Manage.getObj().getEvaluations().get(i).getTotalNo();
+            rowData[2] = new SimpleDateFormat("MMMM dd, yyyy").format(Manage.getObj().getEvaluations().get(i).getDeadline());
+            model.addRow(rowData);
         }
     }
 
@@ -133,7 +253,7 @@ public class StudentFrame extends javax.swing.JFrame {
                         flag1 = false;
                         break;
                     }
-                }else if(s.getRregistrationNumber().equals(a2.getText())) {
+                } else if (s.getRregistrationNumber().equals(a2.getText())) {
                     if (s.getMemberOFGroup().equals("")) {
                         member2 = s;
                         m2 = j;
@@ -142,7 +262,7 @@ public class StudentFrame extends javax.swing.JFrame {
                         flag2 = false;
                         break;
                     }
-                }else if (s.getRregistrationNumber().equals(a3.getText())) {
+                } else if (s.getRregistrationNumber().equals(a3.getText())) {
                     if (s.getMemberOFGroup().equals("")) {
                         member3 = s;
                         m3 = j;
@@ -151,7 +271,7 @@ public class StudentFrame extends javax.swing.JFrame {
                         flag3 = false;
                         break;
                     }
-                }else if(s.getRregistrationNumber().equals(a4.getText())) {
+                } else if (s.getRregistrationNumber().equals(a4.getText())) {
                     if (s.getMemberOFGroup().equals("")) {
                         member4 = s;
                         m4 = j;
@@ -339,7 +459,6 @@ public class StudentFrame extends javax.swing.JFrame {
         jPanel11 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
         jTextField5 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
         jTextField7 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
@@ -348,7 +467,7 @@ public class StudentFrame extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        jTextField29 = new javax.swing.JTextField();
         jPanel12 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
         jTextField10 = new javax.swing.JTextField();
@@ -509,7 +628,7 @@ public class StudentFrame extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton8)
@@ -560,7 +679,7 @@ public class StudentFrame extends javax.swing.JFrame {
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel28)
-                .addGap(111, 372, Short.MAX_VALUE))
+                .addGap(111, 381, Short.MAX_VALUE))
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
@@ -610,7 +729,7 @@ public class StudentFrame extends javax.swing.JFrame {
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel42)
                     .addComponent(jTextField28, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
                 .addComponent(jButton15)
                 .addGap(20, 20, 20))
         );
@@ -714,8 +833,18 @@ public class StudentFrame extends javax.swing.JFrame {
         jScrollPane10.setViewportView(jTable4);
 
         jButton10.setText("Select");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         jButton11.setText("View");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         jButton12.setText("Download Pdf");
 
@@ -732,7 +861,7 @@ public class StudentFrame extends javax.swing.JFrame {
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
                         .addComponent(jButton10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -776,6 +905,11 @@ public class StudentFrame extends javax.swing.JFrame {
         jLabel33.setText("Project Details...");
 
         jButton16.setText("Go Back");
+        jButton16.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton16ActionPerformed(evt);
+            }
+        });
 
         jLabel34.setText("Co-Advisor");
 
@@ -807,7 +941,7 @@ public class StudentFrame extends javax.swing.JFrame {
                         .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextField22, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField20, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
                             .addComponent(jTextField19, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField21, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField23))
@@ -912,6 +1046,11 @@ public class StudentFrame extends javax.swing.JFrame {
         jButton13.setText("Download Pdf");
 
         jButton14.setText("View Assignment");
+        jButton14.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton14ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -920,7 +1059,7 @@ public class StudentFrame extends javax.swing.JFrame {
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 546, Short.MAX_VALUE)
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
                     .addGroup(jPanel15Layout.createSequentialGroup()
                         .addComponent(jLabel23)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -936,7 +1075,7 @@ public class StudentFrame extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addComponent(jLabel23)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
+                .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                 .addGap(30, 30, 30)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton13)
@@ -950,6 +1089,11 @@ public class StudentFrame extends javax.swing.JFrame {
         jLabel36.setText("Assignment Details...");
 
         jButton17.setText("Go Back");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
 
         jLabel37.setText("Title");
 
@@ -991,7 +1135,7 @@ public class StudentFrame extends javax.swing.JFrame {
                         .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField24)
                             .addComponent(jTextField26)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
                             .addComponent(jTextField27)
                             .addComponent(jTextField25))))
                 .addGap(188, 188, 188))
@@ -1019,7 +1163,7 @@ public class StudentFrame extends javax.swing.JFrame {
                         .addComponent(jLabel40))
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel41)
@@ -1060,6 +1204,11 @@ public class StudentFrame extends javax.swing.JFrame {
         jButton4.setText("Change Password");
         jButton4.setBorderPainted(false);
         jButton4.setContentAreaFilled(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel14.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel14.setText("Settings");
@@ -1069,6 +1218,11 @@ public class StudentFrame extends javax.swing.JFrame {
         jButton5.setBorder(null);
         jButton5.setBorderPainted(false);
         jButton5.setContentAreaFilled(false);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jButton6.setText("...");
@@ -1105,17 +1259,25 @@ public class StudentFrame extends javax.swing.JFrame {
 
         jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder("Account Information"));
 
+        jTextField5.setEditable(false);
+
+        jTextField7.setEditable(false);
+
         jLabel17.setText("Name");
 
-        jLabel15.setText("Username");
+        jTextField6.setEditable(false);
 
-        jLabel18.setText("CNIC");
+        jLabel15.setText("Gender");
 
-        jLabel19.setText("Position");
+        jLabel18.setText("Reg No.");
 
-        jLabel16.setText("Password");
+        jLabel19.setText("Department");
 
-        jCheckBox1.setText("Show Password");
+        jTextField8.setEditable(false);
+
+        jLabel16.setText("Email");
+
+        jTextField29.setEditable(false);
 
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
@@ -1125,22 +1287,20 @@ public class StudentFrame extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel17)
-                    .addComponent(jLabel16)
-                    .addComponent(jLabel15)
                     .addComponent(jLabel18)
-                    .addComponent(jLabel19))
+                    .addComponent(jLabel19)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel15))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextField7)
                     .addComponent(jTextField8)
                     .addGroup(jPanel19Layout.createSequentialGroup()
-                        .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBox1)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jTextField5)
-                    .addComponent(jPasswordField1))
-                .addGap(66, 66, 66))
+                    .addComponent(jTextField29))
+                .addContainerGap())
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1164,10 +1324,8 @@ public class StudentFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel16)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jCheckBox1)
-                .addContainerGap(11, Short.MAX_VALUE))
+                    .addComponent(jTextField29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -1175,16 +1333,16 @@ public class StudentFrame extends javax.swing.JFrame {
         jPanel11Layout.setHorizontalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(118, 118, 118)
+                .addGap(130, 130, 130)
                 .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(71, 71, 71))
+                .addGap(69, 69, 69)
+                .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
         jLayeredPane1.add(jPanel11, "card2");
@@ -1196,6 +1354,11 @@ public class StudentFrame extends javax.swing.JFrame {
         jLabel20.setText("Current Password");
 
         jButton7.setText("Change");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jLabel22.setText("Confirm Password");
 
@@ -1241,7 +1404,7 @@ public class StudentFrame extends javax.swing.JFrame {
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel22))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addComponent(jButton7)
                 .addContainerGap())
         );
@@ -1253,7 +1416,7 @@ public class StudentFrame extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addGap(122, 122, 122)
                 .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1269,11 +1432,11 @@ public class StudentFrame extends javax.swing.JFrame {
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 681, Short.MAX_VALUE)
+            .addGap(0, 690, Short.MAX_VALUE)
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 369, Short.MAX_VALUE)
+            .addGap(0, 385, Short.MAX_VALUE)
         );
 
         jLayeredPane1.add(jPanel13, "card4");
@@ -1330,8 +1493,8 @@ public class StudentFrame extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(43, 43, 43)
-                .addComponent(jTabbedPane1)
+                .addGap(27, 27, 27)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1374,11 +1537,63 @@ public class StudentFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         this.setVisible(false);
+        this.setVisible(false);
         JOptionPane.showMessageDialog(null, "Logout Successfull.");
         LoginFrame lf = new LoginFrame();
         lf.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        viewSelectedProject(jTable4, jTextField19, jTextField21, jTextField20, jTextArea1, jTextField22, jTextField23, jLayeredPane3, jPanel17);
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+        // TODO add your handling code here:
+        jLayeredPane3.removeAll();
+        jLayeredPane3.add(jPanel10);
+        jLayeredPane3.repaint();
+        jLayeredPane3.revalidate();
+    }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        selectSelectedProject(jTable4, jTextField12, jTextField13);
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        // TODO add your handling code here:
+        viewSelectedEvaluations(jTable5, jTextField24, jTextField25, jTextField26, jTextArea2, jTextField27, jLayeredPane4, jPanel18);
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        // TODO add your handling code here:
+        jLayeredPane4.removeAll();
+        jLayeredPane4.add(jPanel15);
+        jLayeredPane4.repaint();
+        jLayeredPane4.revalidate();
+    }//GEN-LAST:event_jButton17ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        jLayeredPane1.removeAll();
+        jLayeredPane1.add(jPanel11);
+        jLayeredPane1.repaint();
+        jLayeredPane1.revalidate();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        jLayeredPane1.removeAll();
+        jLayeredPane1.add(jPanel12);
+        jLayeredPane1.repaint();
+        jLayeredPane1.revalidate();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        changePassword();
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1433,7 +1648,6 @@ public class StudentFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1500,7 +1714,6 @@ public class StudentFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1533,6 +1746,7 @@ public class StudentFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField26;
     private javax.swing.JTextField jTextField27;
     private javax.swing.JTextField jTextField28;
+    private javax.swing.JTextField jTextField29;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;

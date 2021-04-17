@@ -15,23 +15,27 @@ public class Evaluations {
 
     private String title;
     private String totalNo;
+    private String obtainedNo;
     private String description;
     private Date deadline;
+    private String studentRegNo;
 
-    public Evaluations(){
+    public Evaluations() {
         title = "";
         totalNo = "";
+        obtainedNo = "";
         description = "";
         deadline = new Date();
     }
-    
-    public Evaluations(String title, String totalNo, String description, Date deadline){
+
+    public Evaluations(String title, String totalNo, String description, Date deadline, String regno) {
         this.title = title;
         this.totalNo = totalNo;
         this.description = description;
         this.deadline = deadline;
+        this.studentRegNo =regno;
     }
-    
+
     public boolean setTitle(String title) {
         this.title = title;
         return true;
@@ -58,6 +62,26 @@ public class Evaluations {
         return true;
     }
 
+    public boolean setObtainedNo(String obtainedNo) {
+        for (int i = 0; i < obtainedNo.length(); i++) {
+            if (obtainedNo.charAt(i) >= '0' && obtainedNo.charAt(i) <= '9') {
+            } else {
+                return false;
+            }
+        }
+        this.obtainedNo = obtainedNo;
+        return true;
+    }
+
+    public boolean setStudentRegNo(String regno) {
+
+        if (!regno.equals("")) {
+            this.studentRegNo = regno;
+            return true;
+        }
+        return false;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -74,4 +98,11 @@ public class Evaluations {
         return deadline;
     }
 
+    public String getObtainedNo() {
+        return obtainedNo;
+    }
+
+    public String getStudentRegNo() {
+        return studentRegNo;
+    }
 }
