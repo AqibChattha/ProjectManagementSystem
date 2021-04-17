@@ -1,1 +1,11 @@
 Admin;aaaa;Male;admin@uet.pk;aaaaaaaa;11111111111;
+Adviser;ali;Male;ad@a.com;aaaaaaaa;22222222222;2222222222222;Adviser;AG-1;
+Adviser;ada;Female;ac@a.com;aaaaaaaa;33333333333;3443333333333;Co-Adviser;AG-1;
+Adviser;fesfsef;Male;ai@a.com;aaaaaaaa;22222222222;3322222222222;Industrial-Adviser;AG-1;
+Student;a;Female;s1@s.com;aaaaaaaa;2020-CS-1;Computer Science;
+Student;b;Female;s2@s.com;aaaaaaaa;2020-CS-2;Computer Science;
+Student;c;Male;s3@s.com;aaaaaaaa;2020-CS-3;Computer Science;
+Student;d;Male;s4@s.com;2020-CS-1;2020-CS-4;Computer Science;
+Student;e;Male;s5@s.com;aaaaaaaa;2020-CS-5;Computer Science;
+Student;f;Female;s6@s.com;aaaaaaaa;2020-CS-6;Computer Science;
+Adviser;aaawd;Male;ae@a.com;aaaaaaaa;44444444444;4444444444444;Adviser;;

@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import javax.swing.JTextField;
 
 /**
  *
@@ -31,7 +32,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
 
         userNow = (Adviser) Manage.getObj().getUserList().get(index);
         this.index = index;
-
+        jLabel2.setText(userNow.getUserName());
         setEvaluations(jTable3);
         setAccountInfo();
         setFinalizedGroupTable(jTable1);
@@ -48,7 +49,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
 
         for (int i = 0; i < Manage.getObj().getAdvisoryGroups().size(); i++) {
             AdvisoryGroup ag = Manage.getObj().getAdvisoryGroups().get(i);
-            if (ag.getAdviser().equals(userNow) || ag.getCoAdviser().equals(userNow) || ag.getIndAdviser().equals(userNow)) {
+            if (ag.getAdviser().getCnic().equals(userNow.getCnic()) || ag.getCoAdviser().getCnic().equals(userNow.getCnic()) || ag.getIndAdviser().getCnic().equals(userNow.getCnic())) {
                 jTextField1.setText(ag.getAdviser().getUserName());
                 jTextField2.setText(ag.getCoAdviser().getUserName());
                 jTextField3.setText(ag.getIndAdviser().getUserName());
@@ -90,7 +91,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
 
         for (int i = 0; i < Manage.getObj().getFinalizedGroups().size(); i++) {
             AdvisoryGroup ag = Manage.getObj().getFinalizedGroups().get(i).getProject().getAdvisoryGroup();
-            if (ag.getAdviser().equals(userNow) || ag.getCoAdviser().equals(userNow) || ag.getIndAdviser().equals(userNow)) {
+            if (ag.getAdviser().getCnic().equals(userNow.getCnic()) || ag.getCoAdviser().getCnic().equals(userNow.getCnic()) || ag.getIndAdviser().getCnic().equals(userNow.getCnic())) {
                 Group g = Manage.getObj().getFinalizedGroups().get(i).getGroup();
                 for (int k = 0; k < Manage.getObj().getStudentEvaluations().size(); k++) {
                     List<Evaluations> l = Manage.getObj().getStudentEvaluations().get(k);
@@ -112,6 +113,36 @@ public class AdvisorFrame extends javax.swing.JFrame {
         }
     }
 
+    public void setMarks(JTable table, JTextField m) {
+        int index = table.getSelectedRow();
+        int setter = 0;
+        if (index >= 0) {
+            for (int i = 0; i < Manage.getObj().getFinalizedGroups().size(); i++) {
+                AdvisoryGroup ag = Manage.getObj().getFinalizedGroups().get(i).getProject().getAdvisoryGroup();
+                if (ag.getAdviser().getCnic().equals(userNow.getCnic()) || ag.getCoAdviser().getCnic().equals(userNow.getCnic()) || ag.getIndAdviser().getCnic().equals(userNow.getCnic())) {
+                    Group g = Manage.getObj().getFinalizedGroups().get(i).getGroup();
+                    for (int k = 0; k < Manage.getObj().getStudentEvaluations().size(); k++) {
+                        List<Evaluations> l = Manage.getObj().getStudentEvaluations().get(k);
+                        for (int j = 0; j < l.size(); j++) {
+                            if (g.getMember1().getRregistrationNumber().equals(l.get(j).getStudentRegNo()) || g.getMember2().getRregistrationNumber().equals(l.get(j).getStudentRegNo()) || g.getMember3().getRregistrationNumber().equals(l.get(j).getStudentRegNo()) || g.getMember4().getRregistrationNumber().equals(l.get(j).getStudentRegNo())) {
+                                if (index == setter) {
+                                    l.get(j).setObtainedNo(m.getText());
+                                }
+                                setter++;
+                            }
+
+                        }
+                    }
+                }
+
+            }
+            setEvaluations(jTable3);
+            Manage.getObj().saveStudentEvaluations();
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select first.");
+        }
+    }
+
     public void setProjectTable(JTable a) {
 
         a.setModel(new DefaultTableModel(null, new String[]{"Type", "Title", "Advisery Group"}));
@@ -119,7 +150,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
         Object rowData[] = new Object[3];
         for (int i = 0; i < Manage.getObj().getProjects().size(); i++) {
             AdvisoryGroup ag = Manage.getObj().getProjects().get(i).getAdvisoryGroup();
-            if (ag.getAdviser().equals(userNow) || ag.getCoAdviser().equals(userNow) || ag.getIndAdviser().equals(userNow)) {
+            if (ag.getAdviser().getCnic().equals(userNow.getCnic()) || ag.getCoAdviser().getCnic().equals(userNow.getCnic()) || ag.getIndAdviser().getCnic().equals(userNow.getCnic())) {
                 rowData[0] = Manage.getObj().getProjects().get(i).getType();
                 rowData[1] = Manage.getObj().getProjects().get(i).getTitle();
                 rowData[2] = Manage.getObj().getProjects().get(i).getAdvisoryGroup().getAG_No();
@@ -135,7 +166,7 @@ public class AdvisorFrame extends javax.swing.JFrame {
         Object rowData[] = new Object[3];
         for (int i = 0; i < Manage.getObj().getFinalizedGroups().size(); i++) {
             AdvisoryGroup ag = Manage.getObj().getFinalizedGroups().get(i).getProject().getAdvisoryGroup();
-            if (ag.getAdviser().equals(userNow) || ag.getCoAdviser().equals(userNow) || ag.getIndAdviser().equals(userNow)) {
+            if (ag.getAdviser().getCnic().equals(userNow.getCnic()) || ag.getCoAdviser().getCnic().equals(userNow.getCnic()) || ag.getIndAdviser().getCnic().equals(userNow.getCnic())) {
                 rowData[0] = Manage.getObj().getFinalizedGroups().get(i).getGroup().getSG_No();
                 rowData[1] = Manage.getObj().getFinalizedGroups().get(i).getProject().getTitle();
                 rowData[2] = Manage.getObj().getFinalizedGroups().get(i).getProject().getAdvisoryGroup().getAG_No();
@@ -421,6 +452,11 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jLabel13.setText("Enter obt. Marks");
 
         jButton2.setText("Save");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -618,6 +654,11 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jButton4.setText("Change Password");
         jButton4.setBorderPainted(false);
         jButton4.setContentAreaFilled(false);
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel14.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel14.setText("Settings");
@@ -627,6 +668,11 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jButton5.setBorder(null);
         jButton5.setBorderPainted(false);
         jButton5.setContentAreaFilled(false);
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jButton6.setText("...");
@@ -933,6 +979,27 @@ public class AdvisorFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         changePassword();
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        jLayeredPane1.removeAll();
+        jLayeredPane1.add(jPanel11);
+        jLayeredPane1.repaint();
+        jLayeredPane1.revalidate();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        jLayeredPane1.removeAll();
+        jLayeredPane1.add(jPanel12);
+        jLayeredPane1.repaint();
+        jLayeredPane1.revalidate();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        setMarks(jTable3, jTextField4);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

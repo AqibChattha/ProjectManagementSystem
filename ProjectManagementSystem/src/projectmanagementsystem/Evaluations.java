@@ -33,7 +33,7 @@ public class Evaluations {
         this.totalNo = totalNo;
         this.description = description;
         this.deadline = deadline;
-        this.studentRegNo =regno;
+        this.studentRegNo = regno;
     }
 
     public boolean setTitle(String title) {
@@ -69,8 +69,11 @@ public class Evaluations {
                 return false;
             }
         }
-        this.obtainedNo = obtainedNo;
-        return true;
+        if (Integer.parseInt(obtainedNo) <= Integer.parseInt(totalNo)) {
+            this.obtainedNo = obtainedNo;
+            return true;
+        }
+        return false;
     }
 
     public boolean setStudentRegNo(String regno) {

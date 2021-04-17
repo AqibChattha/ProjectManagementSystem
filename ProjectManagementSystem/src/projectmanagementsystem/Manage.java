@@ -145,9 +145,11 @@ public class Manage {
 
                 AdvisoryGroup a = advisoryGroups.get(i);
                 fw.write(a.getAG_No() + ";");
-                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";");
-                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";");
-                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";");
+                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";" + a.getAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write("\n");
+                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";" + a.getCoAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write("\n");
+                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";" + a.getIndAdviser().getMemberOFAdviseryGroup()+ ";");
                 fw.write("\n");
             }
             fw.flush();
@@ -165,9 +167,11 @@ public class Manage {
                 fw.write(p.getTitle() + ";" + p.getType() + ";" + p.getDescription() + ";");
                 AdvisoryGroup a = p.getAdvisoryGroup();
                 fw.write(a.getAG_No() + ";");
-                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";");
-                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";");
-                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";");
+                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";" + a.getAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write("\n");
+                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";" + a.getCoAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write("\n");
+                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";" + a.getIndAdviser().getMemberOFAdviseryGroup()+ ";");
                 fw.write("\n");
             }
             fw.flush();
@@ -302,10 +306,15 @@ public class Manage {
             input_line = br.readLine();
             while (input_line != null) {
                 String[] arr = input_line.split(";");
-                Adviser addA = new Adviser(arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[1]);
-                Adviser addcA = new Adviser(arr[9], arr[10], arr[11], arr[12], arr[13], arr[14], arr[8]);
-                Adviser addiA = new Adviser(arr[16], arr[17], arr[18], arr[19], arr[20], arr[21], arr[15]);
-                advisoryGroups.add(new AdvisoryGroup(addA, addcA, addiA, arr[0]));
+                Adviser addA = new Adviser(arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[1], arr[8]);
+                String agNo = arr[0];
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Adviser addcA = new Adviser(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[0], arr[7]);
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Adviser addiA = new Adviser(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[0], arr[7]);
+                advisoryGroups.add(new AdvisoryGroup(addA, addcA, addiA, agNo));
                 input_line = br.readLine();
             }
             br.close();
@@ -323,11 +332,18 @@ public class Manage {
             input_line = br.readLine();
             while (input_line != null) {
                 String[] arr = input_line.split(";");
-                Adviser addA = new Adviser(arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[4]);
-                Adviser addcA = new Adviser(arr[12], arr[13], arr[14], arr[15], arr[16], arr[17], arr[11]);
-                Adviser addiA = new Adviser(arr[19], arr[20], arr[21], arr[22], arr[23], arr[24], arr[18]);
-                AdvisoryGroup ag = new AdvisoryGroup(addA, addcA, addiA, arr[3]);
-                projects.add(new Project(arr[0], arr[1], arr[2], ag));
+                Adviser addA = new Adviser(arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[4], arr[11]);
+                String title = arr[0];
+                String type = arr[1];
+                String des = arr[2];
+                String agNo = arr[3];
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Adviser addcA = new Adviser(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[0], arr[7]);
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Adviser addiA = new Adviser(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[0], arr[7]);
+                projects.add(new Project(title, type, des, new AdvisoryGroup(addA, addcA, addiA, agNo)));
                 input_line = br.readLine();
             }
             br.close();

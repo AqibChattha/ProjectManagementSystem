@@ -5,6 +5,8 @@
  */
 package projectmanagementsystem;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author humza
@@ -78,6 +80,13 @@ public class Adviser extends User {
                     return false;
                 }
             }
+            for (int i = 0; i < Manage.getObj().getUserList().size(); i++) {
+            if (Manage.getObj().getUserList().get(i).getType().equals("Adviser")) {
+                if (((Adviser)Manage.getObj().getUserList().get(i)).getCnic().equals(cnic)) {
+                    return false;
+                }
+            }            
+        }
             this.cnic = cnic;
             return true;
         }

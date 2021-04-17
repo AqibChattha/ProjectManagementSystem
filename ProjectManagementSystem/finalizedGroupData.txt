@@ -1,0 +1,2 @@
+SG-1;a;Female;s1@s.com;aaaaaaaa;2020-CS-1;Computer Science;b;Female;s2@s.com;aaaaaaaa;2020-CS-2;Computer Science;c;Male;s3@s.com;aaaaaaaa;2020-CS-3;Computer Science;e;Male;s5@s.com;aaaaaaaa;2020-CS-5;Computer Science;
+ppppp;Research;pppp;AG-1;Adviser;ali;Male;ad@a.com;aaaaaaaa;22222222222;2222222222222;Co-Adviser;ada;Female;ac@a.com;aaaaaaaa;33333333333;3443333333333;Industrial-Adviser;fesfsef;Male;ai@a.com;aaaaaaaa;22222222222;3322222222222;
