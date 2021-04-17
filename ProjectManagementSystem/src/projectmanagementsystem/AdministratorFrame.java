@@ -690,7 +690,7 @@ public class AdministratorFrame extends javax.swing.JFrame {
                 List<Evaluations> l = new ArrayList<>();
                 for (int i = 0; i < Manage.getObj().getUserList().size(); i++) {
                     if (Manage.getObj().getUserList().get(i).getType().equals(studentType)) {
-                        l.add(new Evaluations(a1.getText(), a2.getText(), a3.getText(), a4.getDate(), ((Student) Manage.getObj().getUserList().get(i)).getRregistrationNumber()));
+                        l.add(new Evaluations(a1.getText(), a2.getText(), a3.getText(), a4.getDate(), ((Student) Manage.getObj().getUserList().get(i)).getRregistrationNumber(), ""));
                     }
                 }
                 Manage.getObj().getStudentEvaluations().add((ArrayList) l);
@@ -700,7 +700,7 @@ public class AdministratorFrame extends javax.swing.JFrame {
                 List<Evaluations> l = new ArrayList<>();
                 for (int i = 0; i < Manage.getObj().getUserList().size(); i++) {
                     if (Manage.getObj().getUserList().get(i).getType().equals(studentType)) {
-                        l.add(new Evaluations(a1.getText(), a2.getText(), a3.getText(), a4.getDate(), ((Student) Manage.getObj().getUserList().get(i)).getRregistrationNumber()));
+                        l.add(new Evaluations(a1.getText(), a2.getText(), a3.getText(), a4.getDate(), ((Student) Manage.getObj().getUserList().get(i)).getRregistrationNumber(), ""));
                     }
                 }
                 Manage.getObj().getStudentEvaluations().set(index, (ArrayList) l);

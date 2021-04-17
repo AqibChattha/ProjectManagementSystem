@@ -27,13 +27,22 @@ public class Evaluations {
         description = "";
         deadline = new Date();
     }
-
+    
     public Evaluations(String title, String totalNo, String description, Date deadline, String regno) {
         this.title = title;
         this.totalNo = totalNo;
         this.description = description;
         this.deadline = deadline;
         this.studentRegNo = regno;
+    }
+
+    public Evaluations(String title, String totalNo, String description, Date deadline, String regno, String obtNo) {
+        this.title = title;
+        this.totalNo = totalNo;
+        this.description = description;
+        this.deadline = deadline;
+        this.studentRegNo = regno;
+        this.obtainedNo = obtNo;
     }
 
     public boolean setTitle(String title) {

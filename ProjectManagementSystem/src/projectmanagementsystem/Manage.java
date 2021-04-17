@@ -145,11 +145,11 @@ public class Manage {
 
                 AdvisoryGroup a = advisoryGroups.get(i);
                 fw.write(a.getAG_No() + ";");
-                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";" + a.getAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";" + a.getAdviser().getMemberOFAdviseryGroup() + ";");
                 fw.write("\n");
-                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";" + a.getCoAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";" + a.getCoAdviser().getMemberOFAdviseryGroup() + ";");
                 fw.write("\n");
-                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";" + a.getIndAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";" + a.getIndAdviser().getMemberOFAdviseryGroup() + ";");
                 fw.write("\n");
             }
             fw.flush();
@@ -167,11 +167,11 @@ public class Manage {
                 fw.write(p.getTitle() + ";" + p.getType() + ";" + p.getDescription() + ";");
                 AdvisoryGroup a = p.getAdvisoryGroup();
                 fw.write(a.getAG_No() + ";");
-                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";" + a.getAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";" + a.getAdviser().getMemberOFAdviseryGroup() + ";");
                 fw.write("\n");
-                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";" + a.getCoAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";" + a.getCoAdviser().getMemberOFAdviseryGroup() + ";");
                 fw.write("\n");
-                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";" + a.getIndAdviser().getMemberOFAdviseryGroup()+ ";");
+                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";" + a.getIndAdviser().getMemberOFAdviseryGroup() + ";");
                 fw.write("\n");
             }
             fw.flush();
@@ -186,7 +186,7 @@ public class Manage {
             FileWriter fw = new FileWriter("evaluationsData.txt");
             for (int i = 0; i < evaluations.size(); i++) {
                 Evaluations e = evaluations.get(i);
-                fw.write(e.getTitle() + ";" + e.getTotalNo() + ";" + e.getDescription() + ";" + new SimpleDateFormat("MMMM dd, yyyy").format(e.getDeadline()) + ";" + e.getStudentRegNo() + ";");
+                fw.write(e.getTitle() + ";" + e.getTotalNo() + ";" + e.getDescription() + ";" + new SimpleDateFormat("MMMM dd, yyyy").format(e.getDeadline()) + ";" + e.getStudentRegNo() + ";" + e.getObtainedNo() + ";");
                 fw.write("\n");
             }
             fw.flush();
@@ -251,7 +251,7 @@ public class Manage {
                 List<Evaluations> se = studentEvaluations.get(i);
                 for (int j = 0; j < se.size(); j++) {
                     Evaluations e = se.get(j);
-                    fw.write(e.getTitle() + ";" + e.getTotalNo() + ";" + e.getDescription() + ";" + new SimpleDateFormat("MMMM dd, yyyy").format(e.getDeadline()) + ";" + e.getStudentRegNo() + ";");
+                    fw.write(e.getTitle() + ";" + e.getTotalNo() + ";" + e.getDescription() + ";" + new SimpleDateFormat("MMMM dd, yyyy").format(e.getDeadline()) + ";" + e.getStudentRegNo() + ";" + e.getObtainedNo() + ";");
                     fw.write("\n");
                 }
                 fw.write(";");
@@ -362,7 +362,12 @@ public class Manage {
             while (input_line != null) {
                 String[] arr = input_line.split(";");
                 try {
-                    evaluations.add(new Evaluations(arr[0], arr[1], arr[2], new SimpleDateFormat("MMMM dd, yyyy").parse(arr[3]), arr[4]));
+                    if (arr.length == 5) {
+                        evaluations.add(new Evaluations(arr[0], arr[1], arr[2], new SimpleDateFormat("MMMM dd, yyyy").parse(arr[3]), arr[4]));
+                    } else {
+                        evaluations.add(new Evaluations(arr[0], arr[1], arr[2], new SimpleDateFormat("MMMM dd, yyyy").parse(arr[3]), arr[4], arr[5]));
+
+                    }
                 } catch (ParseException ex) {
                     Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -432,18 +437,23 @@ public class Manage {
             BufferedReader br = new BufferedReader(fr);
             String input_line;
             List<Evaluations> e = new ArrayList<>();
-            input_line = br.readLine();            
+            input_line = br.readLine();
             while (input_line != null) {
                 if (input_line.equals(";")) {
                     studentEvaluations.add((ArrayList) e);
                     e = new ArrayList<>();
-                }else{
-                String[] arr = input_line.split(";");
-                try {
-                    e.add(new Evaluations(arr[0], arr[1], arr[2], new SimpleDateFormat("MMMM dd, yyyy").parse(arr[3]), arr[4]));
-                } catch (ParseException ex) {
-                    Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                } else {
+                    String[] arr = input_line.split(";");
+                    try {
+                        if (arr.length == 5) {
+                            e.add(new Evaluations(arr[0], arr[1], arr[2], new SimpleDateFormat("MMMM dd, yyyy").parse(arr[3]), arr[4]));
+                        } else {
+                            e.add(new Evaluations(arr[0], arr[1], arr[2], new SimpleDateFormat("MMMM dd, yyyy").parse(arr[3]), arr[4], arr[5]));
+
+                        }
+                    } catch (ParseException ex) {
+                        Logger.getLogger(Manage.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 input_line = br.readLine();
             }
