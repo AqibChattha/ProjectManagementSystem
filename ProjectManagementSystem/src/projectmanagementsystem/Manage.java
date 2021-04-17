@@ -47,6 +47,7 @@ public class Manage {
         loadEvaluations();
         loadGroups();
         loadFinalizedGroups();
+        loadStudentEvaluations();
     }
 
     public static Manage getObj() {

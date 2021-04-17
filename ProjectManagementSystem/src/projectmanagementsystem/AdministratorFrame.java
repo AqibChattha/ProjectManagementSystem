@@ -707,6 +707,7 @@ public class AdministratorFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Evaluation Updated Successfully.");
             }
             Manage.getObj().saveEvaluations();
+            Manage.getObj().saveStudentEvaluations();
             updateEvaluationsTables();
             a1.setText("");
             a2.setText("");
