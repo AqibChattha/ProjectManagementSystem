@@ -36,7 +36,7 @@ public class StudentFrame extends javax.swing.JFrame {
 
         userNow = (Student) Manage.getObj().getUserList().get(index);
         this.index = index;
-        
+
         jLabel2.setText(userNow.getUserName());
 
         setUserTable(jTable3);
@@ -61,7 +61,7 @@ public class StudentFrame extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid new Password.");
                 }
-            }else {
+            } else {
                 JOptionPane.showMessageDialog(null, "Enter correct old password.");
             }
         } else {
@@ -210,14 +210,27 @@ public class StudentFrame extends javax.swing.JFrame {
 
     public void setProjectTable(JTable a) {
 
-        a.setModel(new DefaultTableModel(null, new String[]{"Type", "Title", "Advisery Group"}));
+        a.setModel(new DefaultTableModel(null, new String[]{"Type", "Title", "Advisery Group", "Status"}));
         model = (DefaultTableModel) a.getModel();
-        Object rowData[] = new Object[3];
+        Object rowData[] = new Object[4];
         for (int i = 0; i < Manage.getObj().getProjects().size(); i++) {
-            rowData[0] = Manage.getObj().getProjects().get(i).getType();
-            rowData[1] = Manage.getObj().getProjects().get(i).getTitle();
-            rowData[2] = Manage.getObj().getProjects().get(i).getAdvisoryGroup().getAG_No();
-            model.addRow(rowData);
+            for (int j = 0; j < Manage.getObj().getFinalizedGroups().size(); j++) {
+                if (Manage.getObj().getProjects().get(i).getTitle().equals(Manage.getObj().getFinalizedGroups().get(j).getProject().getTitle())) {
+                    rowData[0] = Manage.getObj().getProjects().get(i).getType();
+                    rowData[1] = Manage.getObj().getProjects().get(i).getTitle();
+                    rowData[2] = Manage.getObj().getProjects().get(i).getAdvisoryGroup().getAG_No();
+                    rowData[3] = "Unavailable";
+                    model.addRow(rowData);
+                } else {
+                    rowData[0] = Manage.getObj().getProjects().get(i).getType();
+                    rowData[1] = Manage.getObj().getProjects().get(i).getTitle();
+                    rowData[2] = Manage.getObj().getProjects().get(i).getAdvisoryGroup().getAG_No();
+                    rowData[3] = "Available";
+                    model.addRow(rowData);
+                }
+
+            }
+
         }
     }
 
@@ -288,14 +301,15 @@ public class StudentFrame extends javax.swing.JFrame {
         if (g.setMember1(member1) && g.setMember2(member2) && g.setMember3(member3) && g.setMember4(member4)) {
             if (button.getText().equals("Create")) {
                 g.setSG_No();
-                Manage.getObj().getGroups().add(g);
+                String a = g.getSG_No();
                 assignGroupNoToMembers(m1, m2, m3, m4, g.getSG_No());
+                Manage.getObj().getGroups().add(new Group((Student)Manage.getObj().getUserList().get(m1), (Student)Manage.getObj().getUserList().get(m2), (Student)Manage.getObj().getUserList().get(m3), (Student)Manage.getObj().getUserList().get(m4), a));
             } else if (button.getText().equals("Edit")) {
+                String a = Manage.getObj().getGroups().get(index).getSG_No();
                 removeGroupNoFromMembers(Manage.getObj().getGroups().get(index));
-                g.setSG_No(Manage.getObj().getGroups().get(index).getSG_No());
-                assignGroupNoToMembers(m1, m2, m3, m4, g.getSG_No());
-                Manage.getObj().getGroups().set(index, g);
-                JOptionPane.showMessageDialog(null, "Advisory Board Updated Successfully.");
+                assignGroupNoToMembers(m1, m2, m3, m4, a);
+                Manage.getObj().getGroups().set(index, new Group((Student)Manage.getObj().getUserList().get(m1), (Student)Manage.getObj().getUserList().get(m2), (Student)Manage.getObj().getUserList().get(m3), (Student)Manage.getObj().getUserList().get(m4), a));
+                JOptionPane.showMessageDialog(null, "Group Updated Successfully.");
             }
 
             Manage.getObj().saveGroups();
@@ -311,16 +325,16 @@ public class StudentFrame extends javax.swing.JFrame {
         }
     }
 
-    public void assignGroupNoToMembers(int m1, int m2, int m3, int m4, String G_No) {
+    public void assignGroupNoToMembers(int a1, int a2, int a3, int a4, String G_No) {
 
-        Student a = (Student) Manage.getObj().getUserList().get(m1);
-        a.setMemberOFGroup(G_No);
-        a = (Student) Manage.getObj().getUserList().get(m2);
-        a.setMemberOFGroup(G_No);
-        a = (Student) Manage.getObj().getUserList().get(m3);
-        a.setMemberOFGroup(G_No);
-        a = (Student) Manage.getObj().getUserList().get(m4);
-        a.setMemberOFGroup(G_No);
+        Student s = (Student) Manage.getObj().getUserList().get(a1);
+        s.setMemberOFGroup(G_No);
+        s = (Student) Manage.getObj().getUserList().get(a2);
+        s.setMemberOFGroup(G_No);
+        s = (Student) Manage.getObj().getUserList().get(a3);
+        s.setMemberOFGroup(G_No);
+        s = (Student) Manage.getObj().getUserList().get(a4);
+        s.setMemberOFGroup(G_No);
     }
 
     public void removeGroupNoFromMembers(Group g) {
@@ -347,6 +361,21 @@ public class StudentFrame extends javax.swing.JFrame {
             }
         }
     }
+
+//    public void chooseProject(JTable table) {
+//        int index = table.getSelectedRow();
+//        if (index >= 0) {
+//            for (int i = 0; i < Manage.getObj().getFinalizedGroups().size(); i++) {
+//                if (Manage.getObj().getFinalizedGroups().get(i).getProject().getTitle().equals(Manage.getObj().getProjects().get(index).getTitle())) {
+//                    JOptionPane.showMessageDialog(null, "Project is not avaiable.");
+//                } else {
+//
+//                }
+//            }
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Please select first.");
+//        }
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -398,17 +427,13 @@ public class StudentFrame extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
-        jTextField13 = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
-        jButton9 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea3 = new javax.swing.JTextArea();
         jLayeredPane3 = new javax.swing.JLayeredPane();
         jPanel10 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane10 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
-        jButton10 = new javax.swing.JButton();
         jButton11 = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
@@ -764,55 +789,32 @@ public class StudentFrame extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel9.setText("Select Project");
 
-        jLabel10.setText("Project Title");
-
-        jLabel12.setText("Project Type");
-
-        jButton9.setText("Choose");
+        jTextArea3.setColumns(20);
+        jTextArea3.setRows(5);
+        jTextArea3.setText("You  are  required  to  write  an\napplication to the admin for the \nproject you want to work on.\n\nNote: After assigning the project to\none group  it  will be  unavailable  to \nthe other groups.So first come  first\nserve.");
+        jScrollPane1.setViewportView(jTextArea3);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                        .addGap(0, 243, Short.MAX_VALUE)
-                        .addComponent(jButton9))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGap(112, 112, 112)
-                        .addComponent(jLabel9)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(112, 112, 112)
+                .addComponent(jLabel9)
+                .addContainerGap(110, Short.MAX_VALUE))
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(jLabel9)
-                .addGap(59, 59, 59)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton9)
-                .addContainerGap())
+                .addGap(55, 55, 55)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLayeredPane3.setLayout(new java.awt.CardLayout());
@@ -831,13 +833,6 @@ public class StudentFrame extends javax.swing.JFrame {
             }
         ));
         jScrollPane10.setViewportView(jTable4);
-
-        jButton10.setText("Select");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
 
         jButton11.setText("View");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
@@ -858,8 +853,7 @@ public class StudentFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                        .addComponent(jButton10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton11)))
                 .addContainerGap())
         );
@@ -871,9 +865,7 @@ public class StudentFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton11)
-                    .addComponent(jButton10))
+                .addComponent(jButton11)
                 .addContainerGap())
         );
 
@@ -1550,11 +1542,6 @@ public class StudentFrame extends javax.swing.JFrame {
         jLayeredPane3.revalidate();
     }//GEN-LAST:event_jButton16ActionPerformed
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
-        selectSelectedProject(jTable4, jTextField12, jTextField13);
-    }//GEN-LAST:event_jButton10ActionPerformed
-
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
         viewSelectedEvaluations(jTable5, jTextField24, jTextField25, jTextField26, jTextArea2, jTextField27, jLayeredPane4, jPanel18);
@@ -1626,7 +1613,6 @@ public class StudentFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
@@ -1639,11 +1625,8 @@ public class StudentFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1707,6 +1690,7 @@ public class StudentFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1718,11 +1702,10 @@ public class StudentFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTable5;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField15;
     private javax.swing.JTextField jTextField16;
     private javax.swing.JTextField jTextField17;

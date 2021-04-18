@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import javax.swing.*;
+
 /**
  *
  * @author humza
@@ -43,16 +44,16 @@ public class AdvisorFrame extends javax.swing.JFrame {
         jTextField5.setText(userNow.getGender());
         jTextField16.setText(userNow.getEmail());
         jTextField17.setText(userNow.getContactNumber());
-
-        for (int i = 0; i < Manage.getObj().getAdvisoryGroups().size(); i++) {
-            AdvisoryGroup ag = Manage.getObj().getAdvisoryGroups().get(i);
-            if (ag.getAdviser().getCnic().equals(userNow.getCnic()) || ag.getCoAdviser().getCnic().equals(userNow.getCnic()) || ag.getIndAdviser().getCnic().equals(userNow.getCnic())) {
-                jTextField1.setText(ag.getAdviser().getUserName());
-                jTextField2.setText(ag.getCoAdviser().getUserName());
-                jTextField3.setText(ag.getIndAdviser().getUserName());
-                jTextField18.setText(ag.getAG_No());
+        if (!userNow.getMemberOFAdviseryGroup().equals("")) {
+            for (int i = 0; i < Manage.getObj().getAdvisoryGroups().size(); i++) {
+                AdvisoryGroup ag = Manage.getObj().getAdvisoryGroups().get(i);
+                if (userNow.getMemberOFAdviseryGroup().equals(ag.getAG_No())) {
+                    jTextField1.setText(ag.getAdviser().getUserName());
+                    jTextField2.setText(ag.getCoAdviser().getUserName());
+                    jTextField3.setText(ag.getIndAdviser().getUserName());
+                    jTextField18.setText(ag.getAG_No());
+                }
             }
-
         }
     }
 
@@ -197,6 +198,10 @@ public class AdvisorFrame extends javax.swing.JFrame {
                     }
                 }
             }
+            jLayeredPane2.removeAll();
+            jLayeredPane2.add(jPanel10);
+            jLayeredPane2.repaint();
+            jLayeredPane2.revalidate();
         } else {
             JOptionPane.showMessageDialog(null, "Please select first.");
         }
@@ -1048,10 +1053,6 @@ public class AdvisorFrame extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        jLayeredPane2.removeAll();
-        jLayeredPane2.add(jPanel10);
-        jLayeredPane2.repaint();
-        jLayeredPane2.revalidate();
         viewSelectedEvaluations(jTable3);
     }//GEN-LAST:event_jButton3ActionPerformed
 

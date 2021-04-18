@@ -15,26 +15,34 @@ public class Student extends User {
     private String department;
     private String memberOfGroup = "";
 
-    public Student(){
+    public Student() {
         registrationNumber = "";
         department = "";
     }
-    public Student(String userName, String userGender, String emailID, String password, String regNo, String dep){
+
+    public Student(String userName, String userGender, String emailID, String password, String regNo, String dep) {
         super(userName, userGender, emailID, password);
         registrationNumber = regNo;
         this.department = dep;
     }
-    
+
+    public Student(String userName, String userGender, String emailID, String password, String regNo, String dep, String gNo) {
+        super(userName, userGender, emailID, password);
+        registrationNumber = regNo;
+        this.department = dep;
+        this.memberOfGroup = gNo;
+    }
+
     /**
-     * This function will change the value of registrationNumber when called and than
-     * tell us whether the registrationNumber is changed or not. first it will check
-     * the value of parameter regNo. if the regNo parameter is valid it will
-     * change the registrationNumber to number and return true. otherwise if the regNo
-     * is invalid it will return false.
+     * This function will change the value of registrationNumber when called and
+     * than tell us whether the registrationNumber is changed or not. first it
+     * will check the value of parameter regNo. if the regNo parameter is valid
+     * it will change the registrationNumber to number and return true.
+     * otherwise if the regNo is invalid it will return false.
      *
      * @param regNo String datatype input value to be the new registrationNumber
-     * @return it returns boolean value, that tells wether the registrationNumber was
-     * changed or not.
+     * @return it returns boolean value, that tells wether the
+     * registrationNumber was changed or not.
      */
     public boolean setRegNo(String regNo) {
         boolean flag = true;
@@ -51,6 +59,13 @@ public class Student extends User {
                     return false;
                 }
             }
+            for (int i = 0; i < Manage.getObj().getUserList().size(); i++) {
+                if (Manage.getObj().getUserList().get(i).getType().equals("Student")) {
+                    if (((Student) Manage.getObj().getUserList().get(i)).getRregistrationNumber().equals(regNo)) {
+                        return false;
+                    }
+                }
+            }
         }
         this.registrationNumber = regNo;
         return true;
@@ -58,10 +73,10 @@ public class Student extends User {
 
     /**
      * This function will change the value of department when called and than
-     * tell us whether the department is changed or not. first it will check
-     * the value of parameter dep. if the dep parameter is valid it will
-     * change the department to number and return true. otherwise if the dep
-     * is invalid it will return false.
+     * tell us whether the department is changed or not. first it will check the
+     * value of parameter dep. if the dep parameter is valid it will change the
+     * department to number and return true. otherwise if the dep is invalid it
+     * will return false.
      *
      * @param dep String datatype input value to be the new department
      * @return it returns boolean value, that tells wether the department was
@@ -76,8 +91,8 @@ public class Student extends User {
      * This function will change the value of memberOfGroup when called and than
      * tell us whether the memberOfGroup is changed or not. first it will check
      * the value of parameter groupID. if the groupID parameter is valid it will
-     * change the memberOfGroup and return true. otherwise if the groupID
-     * is invalid it will return false.
+     * change the memberOfGroup and return true. otherwise if the groupID is
+     * invalid it will return false.
      *
      * @param groupID String datatype input value to be the new memberOfGroup
      * @return it returns boolean value, that tells wether the memberOfGroup was
@@ -90,6 +105,7 @@ public class Student extends User {
 
     /**
      * This function gets the value of registrationNumber
+     *
      * @return it will return value of registrationNumber
      */
     public String getRregistrationNumber() {
@@ -98,6 +114,7 @@ public class Student extends User {
 
     /**
      * This function gets the value of department
+     *
      * @return it will return value of department
      */
     public String getDepartment() {
@@ -106,6 +123,7 @@ public class Student extends User {
 
     /**
      * This function gets the value of memberOfGroup
+     *
      * @return it will return value of memberOfGroup
      */
     public String getMemberOFGroup() {
@@ -114,9 +132,10 @@ public class Student extends User {
 
     /**
      * This function gets the type of the class
+     *
      * @return it will return type of the class
      */
-    public String getType(){
+    public String getType() {
         return "Student";
     }
 }

@@ -127,7 +127,7 @@ public class Manage {
                 }
                 if (userList.get(i).getType().equals("Student")) {
                     Student s = (Student) userList.get(i);
-                    fw.write(s.getType() + ";" + s.getUserName() + ";" + s.getGender() + ";" + s.getEmail() + ";" + s.getPassword() + ";" + s.getRregistrationNumber() + ";" + s.getDepartment() + ";");
+                    fw.write(s.getType() + ";" + s.getUserName() + ";" + s.getGender() + ";" + s.getEmail() + ";" + s.getPassword() + ";" + s.getRregistrationNumber() + ";" + s.getDepartment() + ";" + s.getMemberOFGroup() + ";");
                 }
                 fw.write("\n");
             }
@@ -203,10 +203,13 @@ public class Manage {
 
                 Group g = groups.get(i);
                 fw.write(g.getSG_No() + ";");
-                fw.write(g.getMember1().getUserName() + ";" + g.getMember1().getGender() + ";" + g.getMember1().getEmail() + ";" + g.getMember1().getPassword() + ";" + g.getMember1().getRregistrationNumber() + ";" + g.getMember1().getDepartment() + ";");
-                fw.write(g.getMember2().getUserName() + ";" + g.getMember2().getGender() + ";" + g.getMember2().getEmail() + ";" + g.getMember2().getPassword() + ";" + g.getMember2().getRregistrationNumber() + ";" + g.getMember2().getDepartment() + ";");
-                fw.write(g.getMember3().getUserName() + ";" + g.getMember3().getGender() + ";" + g.getMember3().getEmail() + ";" + g.getMember3().getPassword() + ";" + g.getMember3().getRregistrationNumber() + ";" + g.getMember3().getDepartment() + ";");
-                fw.write(g.getMember4().getUserName() + ";" + g.getMember4().getGender() + ";" + g.getMember4().getEmail() + ";" + g.getMember4().getPassword() + ";" + g.getMember4().getRregistrationNumber() + ";" + g.getMember4().getDepartment() + ";");
+                fw.write(g.getMember1().getUserName() + ";" + g.getMember1().getGender() + ";" + g.getMember1().getEmail() + ";" + g.getMember1().getPassword() + ";" + g.getMember1().getRregistrationNumber() + ";" + g.getMember1().getDepartment() + ";" + g.getMember1().getMemberOFGroup()+ ";");
+                fw.write("\n");
+                fw.write(g.getMember2().getUserName() + ";" + g.getMember2().getGender() + ";" + g.getMember2().getEmail() + ";" + g.getMember2().getPassword() + ";" + g.getMember2().getRregistrationNumber() + ";" + g.getMember2().getDepartment() + ";" + g.getMember2().getMemberOFGroup()+ ";");
+                fw.write("\n");
+                fw.write(g.getMember3().getUserName() + ";" + g.getMember3().getGender() + ";" + g.getMember3().getEmail() + ";" + g.getMember3().getPassword() + ";" + g.getMember3().getRregistrationNumber() + ";" + g.getMember3().getDepartment() + ";" + g.getMember3().getMemberOFGroup()+ ";");
+                fw.write("\n");
+                fw.write(g.getMember4().getUserName() + ";" + g.getMember4().getGender() + ";" + g.getMember4().getEmail() + ";" + g.getMember4().getPassword() + ";" + g.getMember4().getRregistrationNumber() + ";" + g.getMember4().getDepartment() + ";" + g.getMember4().getMemberOFGroup()+ ";");
                 fw.write("\n");
             }
             fw.flush();
@@ -224,17 +227,23 @@ public class Manage {
                 Group g = finalizedGroups.get(i).getGroup();
                 Project p = finalizedGroups.get(i).getProject();
                 fw.write(g.getSG_No() + ";");
-                fw.write(g.getMember1().getUserName() + ";" + g.getMember1().getGender() + ";" + g.getMember1().getEmail() + ";" + g.getMember1().getPassword() + ";" + g.getMember1().getRregistrationNumber() + ";" + g.getMember1().getDepartment() + ";");
-                fw.write(g.getMember2().getUserName() + ";" + g.getMember2().getGender() + ";" + g.getMember2().getEmail() + ";" + g.getMember2().getPassword() + ";" + g.getMember2().getRregistrationNumber() + ";" + g.getMember2().getDepartment() + ";");
-                fw.write(g.getMember3().getUserName() + ";" + g.getMember3().getGender() + ";" + g.getMember3().getEmail() + ";" + g.getMember3().getPassword() + ";" + g.getMember3().getRregistrationNumber() + ";" + g.getMember3().getDepartment() + ";");
-                fw.write(g.getMember4().getUserName() + ";" + g.getMember4().getGender() + ";" + g.getMember4().getEmail() + ";" + g.getMember4().getPassword() + ";" + g.getMember4().getRregistrationNumber() + ";" + g.getMember4().getDepartment() + ";");
+                fw.write(g.getMember1().getUserName() + ";" + g.getMember1().getGender() + ";" + g.getMember1().getEmail() + ";" + g.getMember1().getPassword() + ";" + g.getMember1().getRregistrationNumber() + ";" + g.getMember1().getDepartment() + ";" + g.getMember1().getMemberOFGroup()+ ";");
+                fw.write("\n");
+                fw.write(g.getMember2().getUserName() + ";" + g.getMember2().getGender() + ";" + g.getMember2().getEmail() + ";" + g.getMember2().getPassword() + ";" + g.getMember2().getRregistrationNumber() + ";" + g.getMember2().getDepartment() + ";" + g.getMember2().getMemberOFGroup()+ ";");
+                fw.write("\n");
+                fw.write(g.getMember3().getUserName() + ";" + g.getMember3().getGender() + ";" + g.getMember3().getEmail() + ";" + g.getMember3().getPassword() + ";" + g.getMember3().getRregistrationNumber() + ";" + g.getMember3().getDepartment() + ";" + g.getMember3().getMemberOFGroup()+ ";");
+                fw.write("\n");
+                fw.write(g.getMember4().getUserName() + ";" + g.getMember4().getGender() + ";" + g.getMember4().getEmail() + ";" + g.getMember4().getPassword() + ";" + g.getMember4().getRregistrationNumber() + ";" + g.getMember4().getDepartment() + ";" + g.getMember4().getMemberOFGroup()+ ";");
                 fw.write("\n");
                 fw.write(p.getTitle() + ";" + p.getType() + ";" + p.getDescription() + ";");
+                fw.write("\n");
                 AdvisoryGroup a = p.getAdvisoryGroup();
                 fw.write(a.getAG_No() + ";");
-                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";");
-                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";");
-                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";");
+                fw.write(a.getAdviser().getRole() + ";" + a.getAdviser().getUserName() + ";" + a.getAdviser().getGender() + ";" + a.getAdviser().getEmail() + ";" + a.getAdviser().getPassword() + ";" + a.getAdviser().getContactNumber() + ";" + a.getAdviser().getCnic() + ";" + a.getAdviser().getMemberOFAdviseryGroup() + ";");
+                fw.write("\n");
+                fw.write(a.getCoAdviser().getRole() + ";" + a.getCoAdviser().getUserName() + ";" + a.getCoAdviser().getGender() + ";" + a.getCoAdviser().getEmail() + ";" + a.getCoAdviser().getPassword() + ";" + a.getCoAdviser().getContactNumber() + ";" + a.getCoAdviser().getCnic() + ";" + a.getCoAdviser().getMemberOFAdviseryGroup() + ";");
+                fw.write("\n");
+                fw.write(a.getIndAdviser().getRole() + ";" + a.getIndAdviser().getUserName() + ";" + a.getIndAdviser().getGender() + ";" + a.getIndAdviser().getEmail() + ";" + a.getIndAdviser().getPassword() + ";" + a.getIndAdviser().getContactNumber() + ";" + a.getIndAdviser().getCnic() + ";" + a.getIndAdviser().getMemberOFAdviseryGroup() + ";");
                 fw.write("\n");
             }
             fw.flush();
@@ -286,7 +295,12 @@ public class Manage {
                     userList.add(addT);
                 }
                 if (arr[0].equals("Student")) {
-                    Student addM = new Student(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
+                    Student addM;
+                    if (arr.length == 7) {
+                        addM = new Student(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
+                    } else {
+                        addM = new Student(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7]);
+                    }
                     userList.add(addM);
                 }
                 input_line = br.readLine();
@@ -332,11 +346,11 @@ public class Manage {
             input_line = br.readLine();
             while (input_line != null) {
                 String[] arr = input_line.split(";");
-                Adviser addA = new Adviser(arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[4], arr[11]);
                 String title = arr[0];
                 String type = arr[1];
                 String des = arr[2];
                 String agNo = arr[3];
+                Adviser addA = new Adviser(arr[5], arr[6], arr[7], arr[8], arr[9], arr[10], arr[4], arr[11]);
                 input_line = br.readLine();
                 arr = input_line.split(";");
                 Adviser addcA = new Adviser(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[0], arr[7]);
@@ -388,11 +402,18 @@ public class Manage {
             input_line = br.readLine();
             while (input_line != null) {
                 String[] arr = input_line.split(";");
-                Student member1 = new Student(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
-                Student member2 = new Student(arr[7], arr[8], arr[9], arr[10], arr[11], arr[12]);
-                Student member3 = new Student(arr[13], arr[14], arr[15], arr[16], arr[17], arr[18]);
-                Student member4 = new Student(arr[19], arr[20], arr[21], arr[22], arr[23], arr[24]);
-                groups.add(new Group(member1, member2, member3, member4, arr[0]));
+                String sgNo = arr[0];
+                Student member1 = new Student(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7]);
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Student member2 = new Student(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Student member3 = new Student(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Student member4 = new Student(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
+                groups.add(new Group(member1, member2, member3, member4, sgNo));
                 input_line = br.readLine();
             }
             br.close();
@@ -410,19 +431,35 @@ public class Manage {
             input_line = br.readLine();
             while (input_line != null) {
                 String[] arr = input_line.split(";");
-                Student member1 = new Student(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
-                Student member2 = new Student(arr[7], arr[8], arr[9], arr[10], arr[11], arr[12]);
-                Student member3 = new Student(arr[13], arr[14], arr[15], arr[16], arr[17], arr[18]);
-                Student member4 = new Student(arr[19], arr[20], arr[21], arr[22], arr[23], arr[24]);
+                String sgNo = arr[0];
+                Student member1 = new Student(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7]);
                 input_line = br.readLine();
-                String[] arr2 = input_line.split(";");
-                Adviser addA = new Adviser(arr2[5], arr2[6], arr2[7], arr2[8], arr2[9], arr2[10], arr2[4]);
-                Adviser addcA = new Adviser(arr2[12], arr2[13], arr2[14], arr2[15], arr2[16], arr2[17], arr2[11]);
-                Adviser addiA = new Adviser(arr2[19], arr2[20], arr2[21], arr2[22], arr2[23], arr2[24], arr2[18]);
-                AdvisoryGroup ag = new AdvisoryGroup(addA, addcA, addiA, arr2[3]);
-                finalizedGroups.add(new FinalizedGroup(new Group(member1, member2, member3, member4, arr[0]), new Project(arr2[0], arr2[1], arr2[2], ag)));
-
+                arr = input_line.split(";");
+                Student member2 = new Student(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
                 input_line = br.readLine();
+                arr = input_line.split(";");
+                Student member3 = new Student(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Student member4 = new Student(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6]);
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                String title = arr[0];
+                String type = arr[1];
+                String des = arr[2];
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                String agNo = arr[0];
+                Adviser addA = new Adviser(arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[1], arr[8]);
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Adviser addcA = new Adviser(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[0], arr[7]);
+                input_line = br.readLine();
+                arr = input_line.split(";");
+                Adviser addiA = new Adviser(arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[0], arr[7]);
+                finalizedGroups.add(new FinalizedGroup(new Group(member1, member2, member3, member4, sgNo), new Project(title, type, des, new AdvisoryGroup(addA, addcA, addiA, agNo))));
+                input_line = br.readLine();
+                
             }
             br.close();
             fr.close();

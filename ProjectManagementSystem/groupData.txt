@@ -1,1 +1,4 @@
-SG-1;a;Female;s1@s.com;aaaaaaaa;2020-CS-1;Computer Science;b;Female;s2@s.com;aaaaaaaa;2020-CS-2;Computer Science;c;Male;s3@s.com;aaaaaaaa;2020-CS-3;Computer Science;e;Male;s5@s.com;aaaaaaaa;2020-CS-5;Computer Science;
+SG-1;a;Female;s1@s.com;aaaaaaaa;2020-CS-1;Computer Science;SG-1;
+c;Male;s3@s.com;aaaaaaaa;2020-CS-3;Computer Science;SG-1;
+b;Female;s2@s.com;aaaaaaaa;2020-CS-2;Computer Science;SG-1;
+d;Male;s4@s.com;2020-CS-1;2020-CS-4;Computer Science;SG-1;

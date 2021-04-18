@@ -600,12 +600,12 @@ public class AdministratorFrame extends javax.swing.JFrame {
                 ag.setAG_No();
                 String a = ag.getAG_No();
                 assignGroupNoToMembers(aI, caI, iaI, a);
-                Manage.getObj().getAdvisoryGroups().add(new AdvisoryGroup((Adviser)Manage.getObj().getUserList().get(aI), (Adviser)Manage.getObj().getUserList().get(caI), (Adviser)Manage.getObj().getUserList().get(iaI), a));
+                Manage.getObj().getAdvisoryGroups().add(new AdvisoryGroup((Adviser) Manage.getObj().getUserList().get(aI), (Adviser) Manage.getObj().getUserList().get(caI), (Adviser) Manage.getObj().getUserList().get(iaI), a));
             } else if (button.getText().equals("Edit")) {
-                removeGroupNoFromMembers(Manage.getObj().getAdvisoryGroups().get(index));
                 String a = Manage.getObj().getAdvisoryGroups().get(index).getAG_No();
+                removeGroupNoFromMembers(Manage.getObj().getAdvisoryGroups().get(index));
                 assignGroupNoToMembers(aI, caI, iaI, a);
-                Manage.getObj().getAdvisoryGroups().set(index, new AdvisoryGroup((Adviser)Manage.getObj().getUserList().get(aI), (Adviser)Manage.getObj().getUserList().get(caI), (Adviser)Manage.getObj().getUserList().get(iaI), a));
+                Manage.getObj().getAdvisoryGroups().set(index, new AdvisoryGroup((Adviser) Manage.getObj().getUserList().get(aI), (Adviser) Manage.getObj().getUserList().get(caI), (Adviser) Manage.getObj().getUserList().get(iaI), a));
                 JOptionPane.showMessageDialog(null, "Advisory Board Updated Successfully.");
             }
 
@@ -650,6 +650,43 @@ public class AdministratorFrame extends javax.swing.JFrame {
                     Manage.getObj().getUserList().set(i, a);
                 }
             }
+        }
+    }
+
+    public void finalizeGroup(JTextField a1, JTextField a2, JButton button, JTable table) {
+
+        Group group = new Group();
+        Project project = new Project();
+        for (int i = 0; i < Manage.getObj().getGroups().size(); i++) {
+            if (Manage.getObj().getGroups().get(i).getSG_No().equals(a1.getText())) {
+                group = Manage.getObj().getGroups().get(i);
+            }
+
+        }
+        for (int i = 0; i < Manage.getObj().getProjects().size(); i++) {
+            if (Manage.getObj().getProjects().get(i).getTitle().equals(a2.getText())) {
+                project = Manage.getObj().getProjects().get(i);
+            }
+
+        }
+
+        FinalizedGroup fg = new FinalizedGroup();
+        if (fg.setGroup(group) && fg.setProject(project)) {
+            if (button.getText().equals("Save")) {
+                Manage.getObj().getFinalizedGroups().add(fg);
+            } else if (button.getText().equals("Edit")) {
+                int index = table.getSelectedRow();
+                Manage.getObj().getFinalizedGroups().set(index, fg);
+                JOptionPane.showMessageDialog(null, "Finalized Group Updated Successfully.");
+                jButton22.setText("Save");
+                jButton34.setText("Edit");
+            }
+            Manage.getObj().saveFinalizedGroups();
+            updateFinalizedGroupTables();
+            a1.setText("");
+            a2.setText("");
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid input.");
         }
     }
 
@@ -713,43 +750,6 @@ public class AdministratorFrame extends javax.swing.JFrame {
             a2.setText("");
             a3.setText("");
             a4.setDate(null);
-        } else {
-            JOptionPane.showMessageDialog(null, "Invalid input.");
-        }
-    }
-
-    public void finalizeGroup(JTextField a1, JTextField a2, JButton button, JTable table) {
-
-        Group group = new Group();
-        Project project = new Project();
-        for (int i = 0; i < Manage.getObj().getGroups().size(); i++) {
-            if (Manage.getObj().getGroups().get(i).getSG_No().equals(a1.getText())) {
-                group = Manage.getObj().getGroups().get(i);
-            }
-
-        }
-        for (int i = 0; i < Manage.getObj().getProjects().size(); i++) {
-            if (Manage.getObj().getProjects().get(i).getTitle().equals(a2.getText())) {
-                project = Manage.getObj().getProjects().get(i);
-            }
-
-        }
-
-        FinalizedGroup fg = new FinalizedGroup();
-        if (fg.setGroup(group) && fg.setProject(project)) {
-            if (button.getText().equals("Save")) {
-                Manage.getObj().getFinalizedGroups().add(fg);
-            } else if (button.getText().equals("Edit")) {
-                int index = table.getSelectedRow();
-                Manage.getObj().getFinalizedGroups().set(index, fg);
-                JOptionPane.showMessageDialog(null, "Finalized Group Updated Successfully.");
-                jButton22.setText("Save");
-                jButton34.setText("Edit");
-            }
-            Manage.getObj().saveFinalizedGroups();
-            updateFinalizedGroupTables();
-            a1.setText("");
-            a2.setText("");
         } else {
             JOptionPane.showMessageDialog(null, "Invalid input.");
         }
